@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الدفع</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f9f9f9;
+            text-align: center;
+            padding: 20px;
+            direction: rtl;
+        }
+
+        .payment-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 500px;
+            margin: 50px auto;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            margin-bottom: 20px;
+        }
+
+        .service-details {
+            margin-bottom: 30px;
+        }
+
+        .price {
+            font-size: 24px;
+            color: #27ae60;
+            margin-bottom: 15px;
+        }
+
+        .methods {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .method {
+            padding: 15px 30px;
+            border: 2px solid #007BFF;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            font-size: 18px;
+            color: #007BFF;
+        }
+
+        .method:hover {
+            background: #007BFF;
+            color: white;
+        }
+
+        .countdown {
+            font-size: 20px;
+            margin-top: 30px;
+            color: #e74c3c;
+        }
+
+        .billing-info {
+            font-size: 18px;
+            margin-top: 20px;
+            line-height: 1.8;
+            color: #333;
+        }
+
+        .reference {
+            font-size: 20px;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        .done-button {
+            padding: 15px 30px;
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+
+        .done-button:hover {
+            background-color: #2ecc71;
+        }
+    </style>
+</head>
+<body>
+    <div class="payment-container">
+        <h1>إتمام الدفع</h1>
+        <div class="service-details">
+            <h2 id="serviceName">الخدمة</h2>
+            <div class="price" id="servicePrice">السعر</div>
+        </div>
+
+        <h3>اختر طريقة الدفع</h3>
+        <div class="methods">
+            <div class="method" onclick="showBillingInfo('الراجحي')">الراجحي</div>
+            <div class="method" onclick="showBillingInfo('STC Pay')">STC Pay</div>
+        </div>
+
+        <div class="billing-info" id="billingInfo"></div>
+        <div class="reference" id="invoiceNumber"></div>
+
+        <div class="countdown">
+            سيتم تسجيل الاشتراك خلال <span id="timer">10:00</span>
+        </div>
+
+        <!-- Button for when payment is done -->
+        <button class="done-button" onclick="redirectToDonePage()">تم الدفع</button>
+    </div>
+
+    <script>
+        // URL parameters for service and price
+        const params = new URLSearchParams(window.location.search);
+        const serviceName = params.get('service') || 'غير معروف';
+        const servicePrice = params.get('price') || 'غير محدد';
+
+        // Display service name and price
+        document.getElementById('serviceName').textContent = serviceName;
+        document.getElementById('servicePrice').textContent = servicePrice;
+
+        // Countdown Timer (10 minutes)
+        let timeLeft = 600;  // 10 minutes in seconds
+        const timerElement = document.getElementById('timer');
+
+        function startCountdown() {
+            const interval = setInterval(() => {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+
+                timerElement.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                timeLeft--;
+
+                if (timeLeft < 0) {
+                    clearInterval(interval);
+                    alert('تم التسجيل تلقائيًا بنجاح!');
+                }
+            }, 1000);
+        }
+
+        startCountdown();
+
+        // Generate a unique invoice number
+        function generateInvoiceNumber() {
+            return "INV" + Math.floor(100000 + Math.random() * 900000);
+        }
+
+        const invoiceNumber = generateInvoiceNumber();
+        document.getElementById('invoiceNumber').innerHTML = "رقم الفاتورة: " + invoiceNumber;
+
+        // Show billing info based on payment method
+        function showBillingInfo(method) {
+            let info = '';
+
+            if (method === 'الراجحي') {
+                info = `  
+                    <strong>تفاصيل الدفع من خلال الراجحي:</strong><br>
+                    رقم الحساب: 467000010006086030724<br>
+                    رقم الآيبان: SA40 8000 0467 6080 1603 0724<br>
+                    الاسم: محمد حسين عون<br>
+                    يرجى التواصل على الرقم <strong>0570876887</strong> بعد إتمام التحويل.
+                `;
+            } else if (method === 'STC Pay') {
+                info = `  
+                    <strong>تفاصيل الدفع من خلال STC Pay:</strong><br>
+                    رقم الحساب: 0500390153<br>
+                    الاسم: محمد حسين عون<br>
+                    يرجى التواصل على الرقم <strong>0570876887</strong> بعد إتمام التحويل.
+                `;
+            }
+
+            // Update the billing information without showing alerts
+            document.getElementById('billingInfo').innerHTML = info;
+        }
+
+        // Redirect to done.html when payment is done
+        function redirectToDonePage() {
+            window.location.href = `done.html?invoice=${invoiceNumber}`;
+        }
+    </script>
+</body>
+</html>

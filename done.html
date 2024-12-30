@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تم الدفع</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f9f9f9;
+            text-align: center;
+            padding: 20px;
+            direction: rtl;
+        }
+
+        .done-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 500px;
+            margin: 50px auto;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .invoice-info {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .contact-info {
+            font-size: 18px;
+            color: #333;
+            margin-top: 30px;
+        }
+
+        .wait-info {
+            font-size: 20px;
+            color: #e74c3c;
+            font-weight: bold;
+            margin-top: 30px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            font-size: 18px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="done-container">
+        <h1>تم إرسال طلبك بنجاح!</h1>
+        <div class="invoice-info" id="invoiceDetails"></div>
+
+        <div class="wait-info">
+            <p>يرجى الانتظار لمدة 24 ساعة لمعالجة طلبك.</p>
+            <p>يرجى إرسال رقم الفاتورة عبر واتساب إلى الرقم <strong>0570876887</strong> لتأكيد العملية.</p>
+        </div>
+
+        <div class="contact-info">
+            <p>إذا كان لديك أي استفسار، لا تتردد في التواصل معنا عبر واتساب.</p>
+        </div>
+
+        <!-- الرجوع إلى الصفحة الرئيسية -->
+        <a href="main.html" class="button">الرجوع للصفحة الرئيسية</a>
+    </div>
+
+    <script>
+        // Get invoice number from URL
+        const params = new URLSearchParams(window.location.search);
+        const invoiceNumber = params.get('invoice');
+
+        // Display the invoice number
+        document.getElementById('invoiceDetails').innerHTML = `رقم الفاتورة: ${invoiceNumber}`;
+    </script>
+</body>
+</html>

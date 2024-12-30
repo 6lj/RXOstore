@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مركز خدمات البث</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f2f5;
+            min-height: 100vh;
+            padding: 20px;
+            text-align: center;
+            direction: rtl;
+        }
+
+        .header {
+            padding: 15px;
+            margin-bottom: 30px;
+            color: #1a1a1a;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .service-icon {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .service-icon:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .icon-img {
+            width: 90px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .service-icon h3 {
+            font-size: 16px;
+            margin: 5px 0;
+        }
+
+        .price-preview {
+            font-size: 14px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .language-switch {
+            margin: 20px;
+        }
+
+        .switch-btn {
+            background: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .switch-btn:hover {
+            background: #0056b3;
+        }
+
+        @media (max-width: 768px) {
+            .service-icon {
+                padding: 15px;
+                width: 100%;
+            }
+
+            .services-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .price-preview {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 id="storeTitle">مركز خدمات البث</h1>
+        <p id="storeSubtitle">اكتشف أفضل خدمات البث واحصل على عروض حصرية</p>
+    </div>
+
+    <div class="language-switch">
+        <button class="switch-btn" onclick="switchLanguage()">تبديل إلى الإنجليزية</button>
+    </div>
+
+    <div class="services-grid">
+        <div class="service-icon" onclick="redirectToPayment('نتفليكس', '15 ر.س')">
+            <img src="https://www.stc.com.sa/content/dam/stc/netflix%20logo.png" alt="Netflix Logo" class="icon-img">
+            <h3 id="service1">نتفليكس</h3>
+            <div class="price-preview" id="price1">15 ر.س / الشهر</div>
+        </div>
+
+        <div class="service-icon" onclick="redirectToPayment('برايم فيديو', '10 ر.س')">
+            <img src="https://play-lh.googleusercontent.com/mZ6pRo5-NnrO9GMwFNrK5kShF0UrN5UOARVAw64_5aFG6NgEHSlq-BX5I8TEXtTOk9s" alt="Prime Video Logo" class="icon-img">
+            <h3 id="service2">برايم فيديو</h3>
+            <div class="price-preview" id="price2">10 ر.س / الشهر</div>
+        </div>
+
+        <div class="service-icon" onclick="redirectToPayment('يوتيوب بريميوم', '7 ر.س')">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWu3iTNab6Gt0Q5yo3vKxQG4OL4szu-bgXpg&s" alt="YouTube Premium Logo" class="icon-img">
+            <h3 id="service3">يوتيوب بريميوم</h3>
+            <div class="price-preview" id="price3">7 ر.س / الشهر</div>
+        </div>
+
+        <div class="service-icon" onclick="redirectToPayment('OSN+', '15 ر.س')">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREvDyudPLgtdZ3wrRflHVIJkEdotweRbbMtw&s" alt="OSN+ Logo" class="icon-img">
+            <h3 id="service4">OSN+</h3>
+            <div class="price-preview" id="price4">15 ر.س / الشهر</div>
+        </div>
+
+        <div class="service-icon" onclick="redirectToPayment('شاهد VIP', '10 ر.س')">
+            <img src="https://fennec-fox.net/wp-content/uploads/2020/07/New-Shahid_logo.png.webp" alt="Shahid VIP Logo" class="icon-img">
+            <h3 id="service5">شاهد VIP</h3>
+            <div class="price-preview" id="price5">10 ر.س / الشهر</div>
+        </div>
+    </div>
+
+    <script>
+        let isArabic = true;
+
+        function switchLanguage() {
+            const switchBtn = document.querySelector('.switch-btn');
+            const storeTitle = document.getElementById('storeTitle');
+            const storeSubtitle = document.getElementById('storeSubtitle');
+            const service1 = document.getElementById('service1');
+            const service2 = document.getElementById('service2');
+            const service3 = document.getElementById('service3');
+            const service4 = document.getElementById('service4');
+            const service5 = document.getElementById('service5');
+            const price1 = document.getElementById('price1');
+            const price2 = document.getElementById('price2');
+            const price3 = document.getElementById('price3');
+            const price4 = document.getElementById('price4');
+            const price5 = document.getElementById('price5');
+
+            if (isArabic) {
+                switchBtn.textContent = 'Switch to Arabic';
+                storeTitle.textContent = 'Endup Store';
+                storeSubtitle.textContent = 'Discover the best streaming services and get exclusive offers';
+                service1.textContent = 'Netflix';
+                service2.textContent = 'Prime Video';
+                service3.textContent = 'YouTube Premium';
+                service4.textContent = 'OSN+';
+                service5.textContent = 'Shahid VIP';
+                price1.textContent = '15 SAR / month';
+                price2.textContent = '10 SAR / month';
+                price3.textContent = '7 SAR / month';
+                price4.textContent = '15 SAR / month';
+                price5.textContent = '10 SAR / month';
+                document.documentElement.lang = "en";
+                document.body.style.direction = 'ltr';
+            } else {
+                switchBtn.textContent = 'تبديل إلى الإنجليزية';
+                storeTitle.textContent = 'مركز خدمات البث';
+                storeSubtitle.textContent = 'اكتشف أفضل خدمات البث واحصل على عروض حصرية';
+                service1.textContent = 'نتفليكس';
+                service2.textContent = 'برايم فيديو';
+                service3.textContent = 'يوتيوب بريميوم';
+                service4.textContent = 'OSN+';
+                service5.textContent = 'شاهد VIP';
+                price1.textContent = '15 ر.س / الشهر';
+                price2.textContent = '10 ر.س / الشهر';
+                price3.textContent = '7 ر.س / الشهر';
+                price4.textContent = '15 ر.س / الشهر';
+                price5.textContent = '10 ر.س / الشهر';
+                document.documentElement.lang = "ar";
+                document.body.style.direction = 'rtl';
+            }
+            isArabic = !isArabic;
+        }
+
+        function redirectToPayment(serviceName, price) {
+            const query = `?service=${encodeURIComponent(serviceName)}&price=${encodeURIComponent(price)}`;
+            window.location.href = 'payment.html' + query;
+        }
+    </script>
+</body>
+</html>
