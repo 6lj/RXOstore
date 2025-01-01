@@ -119,6 +119,7 @@
     </div>
 
     <div class="services-grid">
+        <!-- Existing Services -->
         <div class="service-icon" onclick="redirectToPayment('نتفليكس', '15 ر.س')">
             <img src="https://www.stc.com.sa/content/dam/stc/netflix%20logo.png" alt="Netflix Logo" class="icon-img">
             <h3 id="service1">نتفليكس</h3>
@@ -148,6 +149,61 @@
             <h3 id="service5">شاهد VIP</h3>
             <div class="price-preview" id="price5">10 ر.س / الشهر</div>
         </div>
+
+        <!-- Additional Services -->
+        <div class="service-icon" onclick="redirectToPayment('الشطرنج', '75 ر.س')">
+            <img src="https://img.tapimg.net/market/images/4d65c5705752c3925a91e082461ca56f.png" alt="Chess Logo" class="icon-img">
+            <h3>الشطرنج</h3>
+            <div class="price-preview">75 ر.س / السنة</div>
+        </div>
+
+        <div class="service-icon" onclick="redirectToPayment('STC TV', '10 ر.س')">
+            <img src="https://yt3.googleusercontent.com/yVh1pSojjEroCAXS1x3ELRiQbwT6bKYpZz1YhmqwdiT6Lej7Eoci1vJKjG_8gvZAoKT81F-Psg=s900-c-k-c0x00ffffff-no-rj" alt="STC TV Logo" class="icon-img">
+            <h3>STC TV</h3>
+            <div class="price-preview">10 ر.س / الشهر</div>
+        </div>
+
+        <div class="service-icon" onclick="redirectToPayment('جوّي TV', '10 ر.س')">
+            <img src="https://play-lh.googleusercontent.com/fMWKQ2EaiUV0pF9Ymccb9mTySPvdhL_Dvu0-rRAi08y11HqXsFWHEYemv8EKvr5hfx8" alt="Jawwy TV Logo" class="icon-img">
+            <h3>جوّي TV</h3>
+            <div class="price-preview">10 ر.س / الشهر</div>
+        </div>
+
+        <div class="service-icon" onclick="redirectToPayment('سناب شات', '10 ر.س')">
+            <img src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/c8/da/85/c8da8509-8b39-c515-ce28-3e7a1674d3d5/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/1200x630wa.png" alt="Snapchat Logo" class="icon-img">
+            <h3>سناب شات</h3>
+            <div class="price-preview">10 ر.س / 3 أشهر</div>
+        </div>
+
+        <div class="service-icon" onclick="redirectToPayment('كملنا', '160 ر.س')">
+            <img src="https://play-lh.googleusercontent.com/y8RsUCA18nIMkTtwt9IYNU5kiEI7u4Tx7VSSkbehDP9Yix8irzZBbz0qxEfkykvUKT_1" alt="Kammlna Logo" class="icon-img">
+            <h3>كملنا</h3>
+            <div class="price-preview">160 ر.س / السنة</div>
+        </div>
+
+        <div class="service-icon" onclick="redirectToPayment('IPTV', '40 ر.س')">
+            <img src="https://cdn.salla.sa/vqAyo/bcf687a8-fffa-4d0f-8676-b6b20910c06c-1000x1000-ItFYbnNT2Nf4A1ayXXOQGUHiViWHWoXrq2ScDbvq.png" alt="IPTV Logo" class="icon-img">
+            <h3>IPTV</h3>
+            <div class="price-preview">40 ر.س / السنة</div>
+        </div>
+
+        <div class="service-icon" onclick="redirectToPayment('أنغامي', '10 ر.س')">
+            <img src="https://www.stc.com.sa/content/dam/stc/Anghami.png" alt="Anghami Logo" class="icon-img">
+            <h3>أنغامي</h3>
+            <div class="price-preview">10 ر.س / الشهر</div>
+        </div>
+
+        <div class="service-icon" onclick="redirectToPayment('Spotify', '7 ر.س')">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwDiicpDsawpNveT7Ota2-EC_vZbP8vneTbg&s" alt="Spotify Logo" class="icon-img">
+            <h3>Spotify</h3>
+            <div class="price-preview">7 ر.س / الشهر</div>
+        </div>
+
+        <div class="service-icon" onclick="redirectToPayment('Canva', '7 ر.س')">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTS4_84DOFOo0V4Q3ipj_3ti80genH3Ix9gzw&s" alt="Canva Logo" class="icon-img">
+            <h3>Canva</h3>
+            <div class="price-preview">7 ر.س / الشهر</div>
+        </div>
     </div>
 
     <script>
@@ -169,9 +225,9 @@
             const price5 = document.getElementById('price5');
 
             if (isArabic) {
-                switchBtn.textContent = 'Switch to Arabic';
-                storeTitle.textContent = 'Endup Store';
-                storeSubtitle.textContent = 'Discover the best streaming services and get exclusive offers';
+                switchBtn.textContent = 'Switch to English';
+                storeTitle.textContent = 'ENDUP Store';
+                storeSubtitle.textContent = 'Discover the best subscription services and get exclusive offers';
                 service1.textContent = 'Netflix';
                 service2.textContent = 'Prime Video';
                 service3.textContent = 'YouTube Premium';
@@ -182,12 +238,10 @@
                 price3.textContent = '7 SAR / month';
                 price4.textContent = '15 SAR / month';
                 price5.textContent = '10 SAR / month';
-                document.documentElement.lang = "en";
-                document.body.style.direction = 'ltr';
             } else {
                 switchBtn.textContent = 'تبديل إلى الإنجليزية';
-                storeTitle.textContent = 'ENDUP Store';
-                storeSubtitle.textContent = 'اكتشف أفضل خدمات الاشتراك واحصل على عروض حصرية';
+                storeTitle.textContent = 'مخزن إنداب';
+                storeSubtitle.textContent = 'اكتشف أفضل خدمات البث واحصل على عروض حصرية';
                 service1.textContent = 'نتفليكس';
                 service2.textContent = 'برايم فيديو';
                 service3.textContent = 'يوتيوب بريميوم';
@@ -198,15 +252,12 @@
                 price3.textContent = '7 ر.س / الشهر';
                 price4.textContent = '15 ر.س / الشهر';
                 price5.textContent = '10 ر.س / الشهر';
-                document.documentElement.lang = "ar";
-                document.body.style.direction = 'rtl';
             }
             isArabic = !isArabic;
         }
 
         function redirectToPayment(serviceName, price) {
-            const query = `?service=${encodeURIComponent(serviceName)}&price=${encodeURIComponent(price)}`;
-            window.location.href = 'payment.html' + query;
+            window.location.href = `payment.html?service=${serviceName}&price=${price}`;
         }
     </script>
 </body>
