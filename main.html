@@ -1,264 +1,117 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ENDUP Store</title>
+    <title>ENDUP STORE - Maintenance</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            transition: all 0.3s ease;
         }
 
         body {
             font-family: Arial, sans-serif;
-            background: #f0f2f5;
+            background-color: #f5f5f5;
             min-height: 100vh;
-            padding: 20px;
-            text-align: center;
-            direction: rtl;
-        }
-
-        .header {
-            padding: 15px;
-            margin-bottom: 30px;
-            color: #1a1a1a;
-        }
-
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .service-icon {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
+            justify-content: center;
             align-items: center;
-            gap: 10px;
         }
 
-        .service-icon:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        .container {
+            text-align: center;
+            padding: 20px;
+            max-width: 600px;
+            width: 90%;
         }
 
-        .icon-img {
-            width: 90px;
-            height: auto;
-            margin-bottom: 10px;
-        }
-
-        .service-icon h3 {
-            font-size: 16px;
-            margin: 5px 0;
-        }
-
-        .price-preview {
-            font-size: 14px;
+        .logo {
+            font-size: 2.5rem;
             font-weight: bold;
-            color: #2c3e50;
+            color: #2196F3;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
         }
 
-        .language-switch {
-            margin: 20px;
+        .maintenance-icon {
+            width: 150px;
+            height: 150px;
+            margin: 20px 0;
         }
 
-        .switch-btn {
-            background: #007BFF;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
+        .loading-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin: 20px 0;
         }
 
-        .switch-btn:hover {
-            background: #0056b3;
+        .dot {
+            width: 12px;
+            height: 12px;
+            background-color: #2196F3;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        .dot:nth-child(2) { animation-delay: 0.5s; }
+        .dot:nth-child(3) { animation-delay: 1s; }
+
+        .message {
+            font-size: 1.5rem;
+            color: #333;
+            margin: 20px 0;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1); }
         }
 
         @media (max-width: 768px) {
-            .service-icon {
-                padding: 15px;
-                width: 100%;
+            .logo {
+                font-size: 2rem;
+            }
+            
+            .maintenance-icon {
+                width: 120px;
+                height: 120px;
             }
 
-            .services-grid {
-                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            .message {
+                font-size: 1.2rem;
             }
+        }
 
-            .header h1 {
-                font-size: 24px;
-            }
+        .gear {
+            animation: rotate 4s linear infinite;
+        }
 
-            .price-preview {
-                font-size: 12px;
-            }
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1 id="storeTitle">ENDUP Store</h1>
-        <p id="storeSubtitle">اكتشف أفضل خدمات الاشتراك واحصل على عروض حصرية</p>
+    <div class="container">
+        <div class="logo">ENDUP STORE</div>
+        
+        <svg class="maintenance-icon gear" viewBox="0 0 100 100">
+            <path fill="#2196F3" d="M50 25c-13.8 0-25 11.2-25 25s11.2 25 25 25 25-11.2 25-25-11.2-25-25-25zm0 45c-11 0-20-9-20-20s9-20 20-20 20 9 20 20-9 20-20 20z"/>
+            <path fill="#2196F3" d="M50 0c-2.8 0-5 2.2-5 5v10c0 2.8 2.2 5 5 5s5-2.2 5-5V5c0-2.8-2.2-5-5-5zM50 80c-2.8 0-5 2.2-5 5v10c0 2.8 2.2 5 5 5s5-2.2 5-5V85c0-2.8-2.2-5-5-5zM100 50c0-2.8-2.2-5-5-5H85c-2.8 0-5 2.2-5 5s2.2 5 5 5h10c2.8 0 5-2.2 5-5zM20 50c0-2.8-2.2-5-5-5H5c-2.8 0-5 2.2-5 5s2.2 5 5 5h10c2.8 0 5-2.2 5-5z"/>
+        </svg>
+
+        <div class="loading-dots">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+
+        <h1 class="message">الموقع تحت الصيانة</h1>
     </div>
-
-    <div class="language-switch">
-        <button class="switch-btn" onclick="switchLanguage()">تبديل إلى الإنجليزية</button>
-    </div>
-
-    <div class="services-grid">
-        <!-- Existing Services -->
-        <div class="service-icon" onclick="redirectToPayment('نتفليكس', '15 ر.س')">
-            <img src="https://www.stc.com.sa/content/dam/stc/netflix%20logo.png" alt="Netflix Logo" class="icon-img">
-            <h3 id="service1">نتفليكس</h3>
-            <div class="price-preview" id="price1">15 ر.س / الشهر</div>
-        </div>
-
-        <div class="service-icon" onclick="redirectToPayment('برايم فيديو', '10 ر.س')">
-            <img src="https://play-lh.googleusercontent.com/mZ6pRo5-NnrO9GMwFNrK5kShF0UrN5UOARVAw64_5aFG6NgEHSlq-BX5I8TEXtTOk9s" alt="Prime Video Logo" class="icon-img">
-            <h3 id="service2">برايم فيديو</h3>
-            <div class="price-preview" id="price2">10 ر.س / الشهر</div>
-        </div>
-
-        <div class="service-icon" onclick="redirectToPayment('يوتيوب بريميوم', '7 ر.س')">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWu3iTNab6Gt0Q5yo3vKxQG4OL4szu-bgXpg&s" alt="YouTube Premium Logo" class="icon-img">
-            <h3 id="service3">يوتيوب بريميوم</h3>
-            <div class="price-preview" id="price3">7 ر.س / الشهر</div>
-        </div>
-
-        <div class="service-icon" onclick="redirectToPayment('OSN+', '15 ر.س')">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREvDyudPLgtdZ3wrRflHVIJkEdotweRbbMtw&s" alt="OSN+ Logo" class="icon-img">
-            <h3 id="service4">OSN+</h3>
-            <div class="price-preview" id="price4">15 ر.س / الشهر</div>
-        </div>
-
-        <div class="service-icon" onclick="redirectToPayment('شاهد VIP', '10 ر.س')">
-            <img src="https://fennec-fox.net/wp-content/uploads/2020/07/New-Shahid_logo.png.webp" alt="Shahid VIP Logo" class="icon-img">
-            <h3 id="service5">شاهد VIP</h3>
-            <div class="price-preview" id="price5">10 ر.س / الشهر</div>
-        </div>
-
-        <!-- Additional Services -->
-        <div class="service-icon" onclick="redirectToPayment('الشطرنج', '75 ر.س')">
-            <img src="https://img.tapimg.net/market/images/4d65c5705752c3925a91e082461ca56f.png" alt="Chess Logo" class="icon-img">
-            <h3>الشطرنج</h3>
-            <div class="price-preview">75 ر.س / السنة</div>
-        </div>
-
-        <div class="service-icon" onclick="redirectToPayment('STC TV', '10 ر.س')">
-            <img src="https://yt3.googleusercontent.com/yVh1pSojjEroCAXS1x3ELRiQbwT6bKYpZz1YhmqwdiT6Lej7Eoci1vJKjG_8gvZAoKT81F-Psg=s900-c-k-c0x00ffffff-no-rj" alt="STC TV Logo" class="icon-img">
-            <h3>STC TV</h3>
-            <div class="price-preview">10 ر.س / الشهر</div>
-        </div>
-
-        <div class="service-icon" onclick="redirectToPayment('جوّي TV', '10 ر.س')">
-            <img src="https://play-lh.googleusercontent.com/fMWKQ2EaiUV0pF9Ymccb9mTySPvdhL_Dvu0-rRAi08y11HqXsFWHEYemv8EKvr5hfx8" alt="Jawwy TV Logo" class="icon-img">
-            <h3>جوّي TV</h3>
-            <div class="price-preview">10 ر.س / الشهر</div>
-        </div>
-
-        <div class="service-icon" onclick="redirectToPayment('سناب شات', '10 ر.س')">
-            <img src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/c8/da/85/c8da8509-8b39-c515-ce28-3e7a1674d3d5/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/1200x630wa.png" alt="Snapchat Logo" class="icon-img">
-            <h3>سناب شات</h3>
-            <div class="price-preview">10 ر.س / 3 أشهر</div>
-        </div>
-
-        <div class="service-icon" onclick="redirectToPayment('كملنا', '160 ر.س')">
-            <img src="https://play-lh.googleusercontent.com/y8RsUCA18nIMkTtwt9IYNU5kiEI7u4Tx7VSSkbehDP9Yix8irzZBbz0qxEfkykvUKT_1" alt="Kammlna Logo" class="icon-img">
-            <h3>كملنا</h3>
-            <div class="price-preview">160 ر.س / السنة</div>
-        </div>
-
-        <div class="service-icon" onclick="redirectToPayment('IPTV', '40 ر.س')">
-            <img src="https://cdn.salla.sa/vqAyo/bcf687a8-fffa-4d0f-8676-b6b20910c06c-1000x1000-ItFYbnNT2Nf4A1ayXXOQGUHiViWHWoXrq2ScDbvq.png" alt="IPTV Logo" class="icon-img">
-            <h3>IPTV</h3>
-            <div class="price-preview">40 ر.س / السنة</div>
-        </div>
-
-        <div class="service-icon" onclick="redirectToPayment('أنغامي', '10 ر.س')">
-            <img src="https://www.stc.com.sa/content/dam/stc/Anghami.png" alt="Anghami Logo" class="icon-img">
-            <h3>أنغامي</h3>
-            <div class="price-preview">10 ر.س / الشهر</div>
-        </div>
-
-        <div class="service-icon" onclick="redirectToPayment('Spotify', '7 ر.س')">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwDiicpDsawpNveT7Ota2-EC_vZbP8vneTbg&s" alt="Spotify Logo" class="icon-img">
-            <h3>Spotify</h3>
-            <div class="price-preview">7 ر.س / الشهر</div>
-        </div>
-
-        <div class="service-icon" onclick="redirectToPayment('Canva', '7 ر.س')">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTS4_84DOFOo0V4Q3ipj_3ti80genH3Ix9gzw&s" alt="Canva Logo" class="icon-img">
-            <h3>Canva</h3>
-            <div class="price-preview">7 ر.س / الشهر</div>
-        </div>
-    </div>
-
-    <script>
-        let isArabic = true;
-
-        function switchLanguage() {
-            const switchBtn = document.querySelector('.switch-btn');
-            const storeTitle = document.getElementById('storeTitle');
-            const storeSubtitle = document.getElementById('storeSubtitle');
-            const service1 = document.getElementById('service1');
-            const service2 = document.getElementById('service2');
-            const service3 = document.getElementById('service3');
-            const service4 = document.getElementById('service4');
-            const service5 = document.getElementById('service5');
-            const price1 = document.getElementById('price1');
-            const price2 = document.getElementById('price2');
-            const price3 = document.getElementById('price3');
-            const price4 = document.getElementById('price4');
-            const price5 = document.getElementById('price5');
-
-            if (isArabic) {
-                switchBtn.textContent = 'Switch to English';
-                storeTitle.textContent = 'ENDUP Store';
-                storeSubtitle.textContent = 'Discover the best subscription services and get exclusive offers';
-                service1.textContent = 'Netflix';
-                service2.textContent = 'Prime Video';
-                service3.textContent = 'YouTube Premium';
-                service4.textContent = 'OSN+';
-                service5.textContent = 'Shahid VIP';
-                price1.textContent = '15 SAR / month';
-                price2.textContent = '10 SAR / month';
-                price3.textContent = '7 SAR / month';
-                price4.textContent = '15 SAR / month';
-                price5.textContent = '10 SAR / month';
-            } else {
-                switchBtn.textContent = 'تبديل إلى الإنجليزية';
-                storeTitle.textContent = 'مخزن إنداب';
-                storeSubtitle.textContent = 'اكتشف أفضل خدمات البث واحصل على عروض حصرية';
-                service1.textContent = 'نتفليكس';
-                service2.textContent = 'برايم فيديو';
-                service3.textContent = 'يوتيوب بريميوم';
-                service4.textContent = 'OSN+';
-                service5.textContent = 'شاهد VIP';
-                price1.textContent = '15 ر.س / الشهر';
-                price2.textContent = '10 ر.س / الشهر';
-                price3.textContent = '7 ر.س / الشهر';
-                price4.textContent = '15 ر.س / الشهر';
-                price5.textContent = '10 ر.س / الشهر';
-            }
-            isArabic = !isArabic;
-        }
-
-        function redirectToPayment(serviceName, price) {
-            window.location.href = `payment.html?service=${serviceName}&price=${price}`;
-        }
-    </script>
 </body>
 </html>
