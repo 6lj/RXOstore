@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تعديل اسم على الشهادة</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+            direction: rtl;
+        }
+        canvas {
+            border: 1px solid #ccc;
+            margin-top: 20px;
+            max-width: 100%;
+        }
+        input[type="text"], button {
+            margin: 10px;
+            padding: 12px;
+            font-size: 18px;
+            width: 90%;
+            max-width: 350px;
+        }
+        button {
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #005bb5;
+        }
+        @media (max-width: 600px) {
+            input[type="text"], button {
+                font-size: 16px;
+                padding: 10px;
+            }
+        }
+        .note {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+        .header-note {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="header-note">
+        تم العمل من طرف محمد عون
+    </div>
+    <h1>تعديل اسم على الشهادة</h1>
+    <p>اكتب الاسم الجديد واضغط على "إضافة الاسم"</p>
+    <input type="text" id="nameInput" placeholder="أدخل الاسم الجديد" />
+    <br>
+    <button onclick="addName()">إضافة الاسم</button>
+    <br><br>
+    <canvas id="certificateCanvas"></canvas>
+    <div class="note">
+        <p>ملاحظة: تم العمل من قبل محمد عون. بعد إضافة الاسم، يجب عليك أخذ لقطة شاشة وقصها.</p>
+    </div>
+    <script>
+        const canvas = document.getElementById('certificateCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        const img = new Image();
+        img.src = 'A.png';
+        
+        img.onload = function() {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
+        };
+
+        function addName() {
+            const name = document.getElementById('nameInput').value;
+            if (!name) {
+                alert("يرجى إدخال الاسم");
+                return;
+            }
+            
+            // Redraw original image
+            ctx.drawImage(img, 0, 0);
+            
+            // Add white background to cover existing name
+            ctx.fillStyle = "white";
+            ctx.fillRect(canvas.width/2 - 50, 295, 300, 35); // Precise coordinates to cover original name
+            
+            // Text styling to match original
+            ctx.font = "bold 22px Arial";
+            ctx.fillStyle = "#0066cc"; // Match the blue color
+            ctx.textAlign = "right";
+            
+            // Position text exactly where Khalid's name was
+            const x = canvas.width/2 + 140; // Adjusted to match original position
+            const y = 315; // Adjusted to match original position
+            
+            ctx.fillText(name, x, y);
+        }
+    </script>
+</body>
+</html>
