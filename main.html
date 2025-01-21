@@ -19,6 +19,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            cursor: pointer;
         }
 
         .container {
@@ -66,24 +67,49 @@
             margin: 20px 0;
         }
 
+        .timer {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+            margin-top: 20px;
+        }
+
+        .play-button {
+            font-size: 1.5rem;
+            color: #fff;
+            background-color: #2196F3;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .play-button:hover {
+            background-color: #1976D2;
+        }
+
+        .play-button span {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .lyrics {
+            font-size: 1.2rem;
+            color: #333;
+            margin: 10px 0;
+            display: none;
+        }
+
+        .lyrics.visible {
+            display: block;
+        }
+
         @keyframes pulse {
             0%, 100% { opacity: 0.3; transform: scale(0.8); }
             50% { opacity: 1; transform: scale(1); }
-        }
-
-        @media (max-width: 768px) {
-            .logo {
-                font-size: 2rem;
-            }
-            
-            .maintenance-icon {
-                width: 120px;
-                height: 120px;
-            }
-
-            .message {
-                font-size: 1.2rem;
-            }
         }
 
         .gear {
@@ -112,6 +138,114 @@
         </div>
 
         <h1 class="message">الموقع تحت الصيانة</h1>
+
+        <div class="timer" id="timer">03:45</div>
+
+        <div class="lyrics" id="message1">"لا تقل أي شيء على الإنترنت مما لا تريد أن يتم لصقه على لوحة إعلانات كبيرة مع وضع وجهك عليها."</div>
+        <div class="lyrics" id="message2">"إذا جعلت العملاء غير سعداء في العالم المادي فقد يخبر كل منهم 6 أصدقاء. إذا جعلت العملاء غير سعداء على الإنترنت فيمكن لكل منهم إخبار 6000 صديق."</div>
+        <div class="lyrics" id="message3">"المحتوى نار. وسائل التواصل الاجتماعي هي البنزين."</div>
+        <div class="lyrics" id="message4">"لا تقلق، المهارات رخيصة، إنما الشغف لا يقدر بثمن."</div>
+        <div class="lyrics" id="message5">"في الوقت الذي تلهو فيه، غيرك يبني فيه مجدًا، والوقت الذي تضيعه في ردهات الحياة، يجعله غيرك سُلَّمًا إلى رضوان الله."</div>
+        <div class="lyrics" id="message6">"جربوا الابتعاد عن الإنترنت قليلاً وستكتشفون أنه لم يفتكم شيء داخله.. ولكن فاتكم كثير خارجه."</div>
+        <div class="lyrics" id="message7">"أتعلم منك شيئًا جديدًا."</div>
+        <div class="lyrics" id="message8">"أسوأ ما يمكن أن تفعله للحب هو أن تنكره."</div>
+        <div class="lyrics" id="message9">"الحب جحيم يُطاق، والحياة بدون حب نعيم لا يُطاق."</div>
+        <div class="lyrics" id="message10">"الشخص الذي لا يخطئ هو الشخص الذي لا يفعل شيئًا."</div>
+        <div class="lyrics" id="message11">"الإنترنت مفيد ولكن لا تجعل حب الإنترنت يتغلغل في قلبك."</div>
+        <div class="lyrics" id="message12">"المهارات رخيصة، إنما الشغف لا يقدر بثمن."</div>
+        <div class="lyrics" id="message13">"لا تقلق، المهارات رخيصة، إنما الشغف لا يقدر بثمن."</div>
+        <div class="lyrics" id="message14">"في الوقت الذي تلهو فيه، غيرك يبني فيه مجدًا."</div>
+        <div class="lyrics" id="message15">"الوقت الذي تضيعه في ردهات الحياة، يجعله غيرك سُلَّمًا إلى رضوان الله."</div>
+        <div class="lyrics" id="message16">"الليل الذي يمضي عليك جُلّه في وسائل التواصل، يرى غيرك فيه سُبلًا إلى الله."</div>
+        <div class="lyrics" id="message17">"الإنترنت مفيد ولكن لا تجعل حب الإنترنت يتغلغل في قلبك."</div>
+        <div class="lyrics" id="message18">"لا تجعل سهام الإنترنت تخترق حاضرك دون فائدة، كي لا يحترق مستقبلك."</div>
+        <div class="lyrics" id="message19">"اشرب من مياه الإنترنت المفيدة وبقدر."</div>
+        <div class="lyrics" id="message20">"لا تجعل حب الإنترنت يتغلغل في قلبك."</div>
+        <div class="lyrics" id="message21">"لا تجعل سهام الإنترنت تخترق حاضرك دون فائدة، كي لا يحترق مستقبلك."</div>
+        <div class="lyrics" id="message22">"اشرب من مياه الإنترنت المفيدة وبقدر."</div>
+        <div class="lyrics" id="message23">"لا تجعل حب الإنترنت يتغلغل في قلبك."</div>
+        <div class="lyrics" id="message24">"لا تجعل سهام الإنترنت تخترق حاضرك دون فائدة، كي لا يحترق مستقبلك."</div>
+
+        <!-- Audio element -->
+        <audio id="audioPlayer" src="A.mp3"></audio>
+
+        <!-- Play Button -->
+        <button class="play-button" id="playButton">
+            <span>&#9658;</span> تشغيل
+        </button>
     </div>
+
+    <script>
+        const lyrics = document.querySelectorAll('.lyrics');
+        const audioPlayer = document.getElementById('audioPlayer');
+        const playButton = document.getElementById('playButton');
+        let currentMessage = 0;
+        let interval;
+        let countdownInterval;
+
+        // Update Timer every second
+        function updateTimer() {
+            const timerElement = document.getElementById('timer');
+            let time = timerElement.textContent.split(":");
+            let minutes = parseInt(time[0]);
+            let seconds = parseInt(time[1]);
+
+            if (seconds > 0) {
+                seconds--;
+            } else {
+                if (minutes > 0) {
+                    minutes--;
+                    seconds = 59;
+                }
+            }
+
+            timerElement.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+
+        // Start the messages and timer
+        function startMessages() {
+            // Show the first message immediately
+            lyrics[currentMessage].classList.add('visible');
+            currentMessage++;
+
+            // Start showing other messages every 5 seconds
+            interval = setInterval(() => {
+                // Hide the previous message
+                if (currentMessage > 0) {
+                    lyrics[currentMessage - 1].classList.remove('visible');
+                }
+
+                // Show the next message
+                if (currentMessage < lyrics.length) {
+                    lyrics[currentMessage].classList.add('visible');
+                    currentMessage++;
+                } else {
+                    clearInterval(interval);
+                }
+            }, 5000); // Display each message every 5 seconds
+        }
+
+        // Start countdown timer
+        function startCountdown() {
+            countdownInterval = setInterval(updateTimer, 1000); // Update every second
+        }
+
+        // Handle click anywhere on the page
+        function handlePlay() {
+            // Hide the play button
+            playButton.style.display = 'none';
+            
+            // Start showing messages and playing the audio
+            startMessages();
+            startCountdown();
+            audioPlayer.play();
+        }
+
+        // Event listener for play button
+        playButton.addEventListener('click', handlePlay);
+
+        // Event listener for clicking anywhere on the body
+        document.body.addEventListener('click', handlePlay);
+    </script>
 </body>
 </html>
