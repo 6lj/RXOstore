@@ -102,11 +102,9 @@
 <body>
     <div class="payment-container">
         <h1>إتمام الدفع</h1>
-        <div class="service-details">
-            <h2 id="serviceName">الخدمة</h2>
-            <div class="price" id="servicePrice">السعر</div>
-        </div>
-
+        
+        <div id="servicesList"></div> <!-- مكان عرض تفاصيل المنتجات -->
+        
         <h3>اختر طريقة الدفع</h3>
         <div class="methods">
             <div class="method" onclick="showBillingInfo('الراجحي')">الراجحي</div>
@@ -125,17 +123,23 @@
     </div>
 
     <script>
-        // URL parameters for service and price
+        // URL parameters for services and total price
         const params = new URLSearchParams(window.location.search);
-        const serviceName = params.get('service') || 'غير معروف';
-        const servicePrice = params.get('price') || 'غير محدد';
+        const services = JSON.parse(params.get('services')) || [];
+        const totalPrice = params.get('total') || '0 ر.س';
 
-        // Display service name and price
-        document.getElementById('serviceName').textContent = serviceName;
-        document.getElementById('servicePrice').textContent = servicePrice;
+        // Display services list and total
+        const servicesListContainer = document.getElementById('servicesList');
+        servicesListContainer.innerHTML = `
+            <div class="service-details">
+                <h2>الخدمات المختارة</h2>
+                ${services.map(service => `<div>${service.name}: ${service.price}</div>`).join('')}
+                <div class="price">الإجمالي: ${totalPrice}</div>
+            </div>
+        `;
 
         // Countdown Timer (10 minutes)
-        let timeLeft = 600;  // 10 minutes in seconds
+        let timeLeft = 600; // 10 minutes in seconds
         const timerElement = document.getElementById('timer');
 
         function startCountdown() {
