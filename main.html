@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ENDUP Store</title>
+    <title>RXO Store</title>
     <style>
         * {
             margin: 0;
@@ -11,7 +11,6 @@
             box-sizing: border-box;
             transition: all 0.3s ease;
         }
-
         body {
             font-family: Arial, sans-serif;
             background: #f0f2f5;
@@ -20,13 +19,11 @@
             text-align: center;
             direction: rtl;
         }
-
         .header {
             padding: 15px;
             margin-bottom: 30px;
             color: #1a1a1a;
         }
-
         .services-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -34,7 +31,6 @@
             max-width: 1200px;
             margin: 0 auto;
         }
-
         .service-icon {
             background: white;
             border-radius: 12px;
@@ -47,33 +43,27 @@
             align-items: center;
             gap: 10px;
         }
-
         .service-icon:hover {
             transform: translateY(-5px);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
         }
-
         .icon-img {
             width: 90px;
             height: auto;
             margin-bottom: 10px;
         }
-
         .service-icon h3 {
             font-size: 16px;
             margin: 5px 0;
         }
-
         .price-preview {
             font-size: 14px;
             font-weight: bold;
             color: #2c3e50;
         }
-
         .language-switch {
             margin: 20px;
         }
-
         .switch-btn {
             background: #007BFF;
             color: white;
@@ -83,182 +73,333 @@
             cursor: pointer;
             font-size: 14px;
         }
-
         .switch-btn:hover {
             background: #0056b3;
         }
-
+        .cart-list {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 300px;
+            background-color: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+            display: none; /* Initially hidden */
+            z-index: 10;
+        }
+        .cart-list ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .cart-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        .cart-list h3 {
+            margin-bottom: 10px;
+        }
+        .cart-list .total-price {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .action-button {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        .checkout-button, .cancel-button {
+            background-color: #28a745; /* Green */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+        .checkout-button:hover, .cancel-button:hover {
+            background-color: #218838;
+        }
+        .cart-icon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 30px;
+            cursor: pointer;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+        .cart-icon:hover {
+            background-color: #0056b3;
+        }
+        .toggle-button {
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            border: none;
+            font-size: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .toggle-button.add {
+            background-color: #28a745; /* Green */
+            color: white;
+        }
+        .toggle-button.remove {
+            background-color: #dc3545; /* Red */
+            color: white;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #777;
+        }
         @media (max-width: 768px) {
             .service-icon {
-                padding: 15px;
-                width: 100%;
-            }
-
-            .services-grid {
-                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            }
-
-            .header h1 {
-                font-size: 24px;
-            }
-
-            .price-preview {
-                font-size: 12px;
+                flex-direction: column; 
             }
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1 id="storeTitle">ENDUP Store</h1>
-        <p id="storeSubtitle">اكتشف أفضل خدمات الاشتراك واحصل على عروض حصرية</p>
+        <h1 id="storeTitle">RXO Store</h1>
+        <p id="storeSubtitle">اكتشف أفضل خدمات البث واحصل على عروض حصرية</p>
     </div>
 
     <div class="language-switch">
         <button class="switch-btn" onclick="switchLanguage()">تبديل إلى الإنجليزية</button>
     </div>
 
-    <div class="services-grid">
-        <!-- Existing Services -->
-        <div class="service-icon" onclick="redirectToPayment('نتفليكس', '15 ر.س')">
+    <div class="cart-list" id="cartList" onclick="event.stopPropagation();"> <!-- Stop closing when clicking inside -->
+        <h3>سلة المشتريات</h3>
+        <ul id="cart-list"></ul>
+        <div class="total-price" id="totalPrice">إجمالي: 0 ر.س</div>
+        <div class="action-button">
+            <button class="cancel-button" onclick="closeCart();">إلغاء</button>
+            <button class="checkout-button" onclick="goToCheckout();">الدفع</button>
+        </div>
+    </div>
+
+    <div class="services-grid"> <!-- Removed onclick to close cart -->
+        <!-- Services -->
+        <div class="service-icon" data-name="نتفليكس" data-price="15 ر.س">
             <img src="https://www.stc.com.sa/content/dam/stc/netflix%20logo.png" alt="Netflix Logo" class="icon-img">
-            <h3 id="service1">نتفليكس</h3>
-            <div class="price-preview" id="price1">15 ر.س / الشهر</div>
+            <h3>نتفليكس</h3>
+            <div class="price-preview">15 ر.س / الشهر</div>
+            <button class="toggle-button add" onclick="toggleProduct(this, 'نتفليكس', 15);">+</button>
         </div>
 
-        <div class="service-icon" onclick="redirectToPayment('برايم فيديو', '10 ر.س')">
+        <div class="service-icon" data-name="برايم فيديو" data-price="10 ر.س">
             <img src="https://play-lh.googleusercontent.com/mZ6pRo5-NnrO9GMwFNrK5kShF0UrN5UOARVAw64_5aFG6NgEHSlq-BX5I8TEXtTOk9s" alt="Prime Video Logo" class="icon-img">
-            <h3 id="service2">برايم فيديو</h3>
-            <div class="price-preview" id="price2">10 ر.س / الشهر</div>
+            <h3>برايم فيديو</h3>
+            <div class="price-preview">10 ر.س / الشهر</div>
+            <button class="toggle-button add" onclick="toggleProduct(this, 'برايم فيديو', 10);">+</button>
         </div>
 
-        <div class="service-icon" onclick="redirectToPayment('يوتيوب بريميوم', '7 ر.س')">
+        <div class="service-icon" data-name="يوتيوب بريميوم" data-price="7 ر.س">
             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWu3iTNab6Gt0Q5yo3vKxQG4OL4szu-bgXpg&s" alt="YouTube Premium Logo" class="icon-img">
-            <h3 id="service3">يوتيوب بريميوم</h3>
-            <div class="price-preview" id="price3">7 ر.س / الشهر</div>
+            <h3>يوتيوب بريميوم</h3>
+            <div class="price-preview">7 ر.س / الشهر</div>
+            <button class="toggle-button add" onclick="toggleProduct(this, 'يوتيوب بريميوم', 7);">+</button>
         </div>
 
-        <div class="service-icon" onclick="redirectToPayment('OSN+', '15 ر.س')">
+        <div class="service-icon" data-name="OSN+" data-price="15 ر.س">
             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREvDyudPLgtdZ3wrRflHVIJkEdotweRbbMtw&s" alt="OSN+ Logo" class="icon-img">
-            <h3 id="service4">OSN+</h3>
-            <div class="price-preview" id="price4">15 ر.س / الشهر</div>
+            <h3>OSN+</h3>
+            <div class="price-preview">15 ر.س / الشهر</div>
+            <button class="toggle-button add" onclick="toggleProduct(this, 'OSN+', 15);">+</button>
         </div>
 
-        <div class="service-icon" onclick="redirectToPayment('شاهد VIP', '10 ر.س')">
+        <div class="service-icon" data-name="شاهد VIP" data-price="10 ر.س">
             <img src="https://fennec-fox.net/wp-content/uploads/2020/07/New-Shahid_logo.png.webp" alt="Shahid VIP Logo" class="icon-img">
-            <h3 id="service5">شاهد VIP</h3>
-            <div class="price-preview" id="price5">10 ر.س / الشهر</div>
+            <h3>شاهد VIP</h3>
+            <div class="price-preview">10 ر.س / الشهر</div>
+            <button class="toggle-button add" onclick="toggleProduct(this, 'شاهد VIP', 10);">+</button>
         </div>
 
-        <!-- Additional Services -->
-        <div class="service-icon" onclick="redirectToPayment('الشطرنج', '75 ر.س')">
+        <div class="service-icon" data-name="الشطرنج" data-price="75 ر.س">
             <img src="https://img.tapimg.net/market/images/4d65c5705752c3925a91e082461ca56f.png" alt="Chess Logo" class="icon-img">
             <h3>الشطرنج</h3>
             <div class="price-preview">75 ر.س / السنة</div>
+            <button class="toggle-button add" onclick="toggleProduct(this, 'الشطرنج', 75);">+</button>
         </div>
 
-        <div class="service-icon" onclick="redirectToPayment('STC TV', '10 ر.س')">
+        <div class="service-icon" data-name="STC TV" data-price="10 ر.س">
             <img src="https://yt3.googleusercontent.com/yVh1pSojjEroCAXS1x3ELRiQbwT6bKYpZz1YhmqwdiT6Lej7Eoci1vJKjG_8gvZAoKT81F-Psg=s900-c-k-c0x00ffffff-no-rj" alt="STC TV Logo" class="icon-img">
             <h3>STC TV</h3>
             <div class="price-preview">10 ر.س / الشهر</div>
+            <button class="toggle-button add" onclick="toggleProduct(this, 'STC TV', 10);">+</button>
         </div>
 
-        <div class="service-icon" onclick="redirectToPayment('جوّي TV', '10 ر.س')">
+        <div class="service-icon" data-name="جوّي TV" data-price="10 ر.س">
             <img src="https://play-lh.googleusercontent.com/fMWKQ2EaiUV0pF9Ymccb9mTySPvdhL_Dvu0-rRAi08y11HqXsFWHEYemv8EKvr5hfx8" alt="Jawwy TV Logo" class="icon-img">
             <h3>جوّي TV</h3>
             <div class="price-preview">10 ر.س / الشهر</div>
+            <button class="toggle-button add" onclick="toggleProduct(this, 'جوّي TV', 10);">+</button>
         </div>
 
-        <div class="service-icon" onclick="redirectToPayment('سناب شات', '10 ر.س')">
+        <div class="service-icon" data-name="سناب شات" data-price="10 ر.س">
             <img src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/c8/da/85/c8da8509-8b39-c515-ce28-3e7a1674d3d5/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/1200x630wa.png" alt="Snapchat Logo" class="icon-img">
             <h3>سناب شات</h3>
             <div class="price-preview">10 ر.س / 3 أشهر</div>
+            <button class="toggle-button add" onclick="toggleProduct(this, 'سناب شات', 10);">+</button>
         </div>
 
-        <div class="service-icon" onclick="redirectToPayment('كملنا', '160 ر.س')">
+        <div class="service-icon" data-name="كملنا" data-price="160 ر.س">
             <img src="https://play-lh.googleusercontent.com/y8RsUCA18nIMkTtwt9IYNU5kiEI7u4Tx7VSSkbehDP9Yix8irzZBbz0qxEfkykvUKT_1" alt="Kammlna Logo" class="icon-img">
             <h3>كملنا</h3>
             <div class="price-preview">160 ر.س / السنة</div>
+            <button class="toggle-button add" onclick="toggleProduct(this, 'كملنا', 160);">+</button>
         </div>
 
-        <div class="service-icon" onclick="redirectToPayment('IPTV', '40 ر.س')">
+        <div class="service-icon" data-name="IPTV" data-price="40 ر.س">
             <img src="https://cdn.salla.sa/vqAyo/bcf687a8-fffa-4d0f-8676-b6b20910c06c-1000x1000-ItFYbnNT2Nf4A1ayXXOQGUHiViWHWoXrq2ScDbvq.png" alt="IPTV Logo" class="icon-img">
             <h3>IPTV</h3>
             <div class="price-preview">40 ر.س / السنة</div>
+            <button class="toggle-button add" onclick="toggleProduct(this, 'IPTV', 40);">+</button>
         </div>
 
-        <div class="service-icon" onclick="redirectToPayment('أنغامي', '10 ر.س')">
+        <div class="service-icon" data-name="أنغامي" data-price="10 ر.س">
             <img src="https://www.stc.com.sa/content/dam/stc/Anghami.png" alt="Anghami Logo" class="icon-img">
             <h3>أنغامي</h3>
             <div class="price-preview">10 ر.س / الشهر</div>
+            <button class="toggle-button add" onclick="toggleProduct(this, 'أنغامي', 10);">+</button>
         </div>
 
-        <div class="service-icon" onclick="redirectToPayment('Spotify', '7 ر.س')">
+        <div class="service-icon" data-name="Spotify" data-price="7 ر.س">
             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwDiicpDsawpNveT7Ota2-EC_vZbP8vneTbg&s" alt="Spotify Logo" class="icon-img">
             <h3>Spotify</h3>
             <div class="price-preview">7 ر.س / الشهر</div>
+            <button class="toggle-button add" onclick="toggleProduct(this, 'Spotify', 7);">+</button>
         </div>
 
-        <div class="service-icon" onclick="redirectToPayment('Canva', '7 ر.س')">
+        <div class="service-icon" data-name="Canva" data-price="7 ر.س">
             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTS4_84DOFOo0V4Q3ipj_3ti80genH3Ix9gzw&s" alt="Canva Logo" class="icon-img">
             <h3>Canva</h3>
             <div class="price-preview">7 ر.س / الشهر</div>
+            <button class="toggle-button add" onclick="toggleProduct(this, 'Canva', 7);">+</button>
         </div>
+    </div>
+
+    <button class="cart-icon" onclick="toggleCart();">🛒</button>
+
+    <div class="footer">
+        <p>by ENDUP</p>
     </div>
 
     <script>
         let isArabic = true;
+        const cart = [];
 
         function switchLanguage() {
             const switchBtn = document.querySelector('.switch-btn');
             const storeTitle = document.getElementById('storeTitle');
             const storeSubtitle = document.getElementById('storeSubtitle');
-            const service1 = document.getElementById('service1');
-            const service2 = document.getElementById('service2');
-            const service3 = document.getElementById('service3');
-            const service4 = document.getElementById('service4');
-            const service5 = document.getElementById('service5');
-            const price1 = document.getElementById('price1');
-            const price2 = document.getElementById('price2');
-            const price3 = document.getElementById('price3');
-            const price4 = document.getElementById('price4');
-            const price5 = document.getElementById('price5');
+            const serviceIcons = document.querySelectorAll('.service-icon');
 
             if (isArabic) {
-                switchBtn.textContent = 'Switch to English';
-                storeTitle.textContent = 'ENDUP Store';
+                switchBtn.textContent = 'تبديل إلى العربية';
+                storeTitle.textContent = 'RXO Store';
                 storeSubtitle.textContent = 'Discover the best subscription services and get exclusive offers';
-                service1.textContent = 'Netflix';
-                service2.textContent = 'Prime Video';
-                service3.textContent = 'YouTube Premium';
-                service4.textContent = 'OSN+';
-                service5.textContent = 'Shahid VIP';
-                price1.textContent = '15 SAR / month';
-                price2.textContent = '10 SAR / month';
-                price3.textContent = '7 SAR / month';
-                price4.textContent = '15 SAR / month';
-                price5.textContent = '10 SAR / month';
+                serviceIcons.forEach(service => {
+                    const name = service.getAttribute('data-name');
+                    service.querySelector('h3').textContent = name; 
+                    const price = service.getAttribute('data-price');
+                    service.querySelector('.price-preview').textContent = price + " / month";
+                });
             } else {
-                switchBtn.textContent = 'تبديل إلى الإنجليزية';
-                storeTitle.textContent = 'مخزن إنداب';
+                switchBtn.textContent = 'Switch to English';
+                storeTitle.textContent = 'RXO Store';
                 storeSubtitle.textContent = 'اكتشف أفضل خدمات البث واحصل على عروض حصرية';
-                service1.textContent = 'نتفليكس';
-                service2.textContent = 'برايم فيديو';
-                service3.textContent = 'يوتيوب بريميوم';
-                service4.textContent = 'OSN+';
-                service5.textContent = 'شاهد VIP';
-                price1.textContent = '15 ر.س / الشهر';
-                price2.textContent = '10 ر.س / الشهر';
-                price3.textContent = '7 ر.س / الشهر';
-                price4.textContent = '15 ر.س / الشهر';
-                price5.textContent = '10 ر.س / الشهر';
+                serviceIcons.forEach(service => {
+                    const name = service.getAttribute('data-name');
+                    service.querySelector('h3').textContent = name;
+                    const price = service.getAttribute('data-price');
+                    service.querySelector('.price-preview').textContent = price + " / الشهر";
+                });
             }
             isArabic = !isArabic;
         }
 
-        function redirectToPayment(serviceName, price) {
-            window.location.href = `payment.html?service=${serviceName}&price=${price}`;
+        function closeCart() {
+            document.getElementById('cartList').style.display = 'none';
         }
+
+        function toggleCart() {
+            const cartList = document.getElementById('cartList');
+            if (cartList.style.display === 'block') {
+                closeCart();
+            } else {
+                updateCartList(); // Ensure the cart is updated
+                cartList.style.display = 'block';
+            }
+        }
+
+        function toggleProduct(button, name, price) {
+            const index = cart.findIndex(item => item.name === name);
+            if (index === -1) {
+                cart.push({ name, price });
+                button.classList.remove('add');
+                button.classList.add('remove');
+                button.textContent = '-';
+            } else {
+                cart.splice(index, 1);
+                button.classList.remove('remove');
+                button.classList.add('add');
+                button.textContent = '+';
+            }
+            updateCartList();
+        }
+
+        function updateCartList() {
+            const cartList = document.getElementById('cart-list');
+            const totalPriceElement = document.getElementById('totalPrice');
+
+            cartList.innerHTML = '';
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `${item.name} <span>${item.price} ر.س</span> <button onclick="removeItem(${index});">-</button>`;
+                cartList.appendChild(li);
+                total += item.price;
+            });
+
+            totalPriceElement.textContent = `إجمالي: ${total} ر.س`;
+        }
+
+        function removeItem(index) {
+            const itemName = cart[index].name;
+            const buttons = document.querySelectorAll('.toggle-button');
+
+            // Find the button that corresponds to the product being removed
+            buttons.forEach((button) => {
+                if (button.textContent === '-' && button.parentElement.getAttribute('data-name') === itemName) {
+                    button.classList.remove('remove');
+                    button.classList.add('add');
+                    button.textContent = '+';
+                }
+            });
+
+            cart.splice(index, 1);
+            updateCartList();
+        }
+function goToCheckout() {
+    const totalPrice = cart.reduce((sum, item) => sum + item.price, 0);
+    const services = cart.map(item => ({ name: item.name, price: item.price + ' ر.س' }));
+
+    const encodedServices = encodeURIComponent(JSON.stringify(services));
+    window.location.href = `payment.html?services=${encodedServices}&total=${totalPrice} ر.س`;
+}
     </script>
 </body>
 </html>
