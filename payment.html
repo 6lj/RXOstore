@@ -102,9 +102,11 @@
 <body>
     <div class="payment-container">
         <h1>إتمام الدفع</h1>
-        
-        <div id="servicesList"></div> <!-- مكان عرض تفاصيل المنتجات -->
-        
+        <div class="service-details">
+            <h2 id="serviceName">الخدمة</h2>
+            <div class="price" id="servicePrice">السعر</div>
+        </div>
+
         <h3>اختر طريقة الدفع</h3>
         <div class="methods">
             <div class="method" onclick="showBillingInfo('الراجحي')">الراجحي</div>
@@ -118,28 +120,18 @@
             سيتم تسجيل الاشتراك خلال <span id="timer">10:00</span>
         </div>
 
-        <!-- Button for when payment is done -->
         <button class="done-button" onclick="redirectToDonePage()">تم الدفع</button>
     </div>
 
     <script>
-        // URL parameters for services and total price
         const params = new URLSearchParams(window.location.search);
-        const services = JSON.parse(params.get('services')) || [];
-        const totalPrice = params.get('total') || '0 ر.س';
+        const serviceName = params.get('service') || 'غير معروف';
+        const servicePrice = params.get('price') || 'غير محدد';
 
-        // Display services list and total
-        const servicesListContainer = document.getElementById('servicesList');
-        servicesListContainer.innerHTML = `
-            <div class="service-details">
-                <h2>الخدمات المختارة</h2>
-                ${services.map(service => `<div>${service.name}: ${service.price}</div>`).join('')}
-                <div class="price">الإجمالي: ${totalPrice}</div>
-            </div>
-        `;
+        document.getElementById('serviceName').textContent = serviceName;
+        document.getElementById('servicePrice').textContent = servicePrice;
 
-        // Countdown Timer (10 minutes)
-        let timeLeft = 600; // 10 minutes in seconds
+        let timeLeft = 600;  
         const timerElement = document.getElementById('timer');
 
         function startCountdown() {
@@ -159,7 +151,6 @@
 
         startCountdown();
 
-        // Generate a unique invoice number
         function generateInvoiceNumber() {
             return "INV" + Math.floor(100000 + Math.random() * 900000);
         }
@@ -167,7 +158,6 @@
         const invoiceNumber = generateInvoiceNumber();
         document.getElementById('invoiceNumber').innerHTML = "رقم الفاتورة: " + invoiceNumber;
 
-        // Show billing info based on payment method
         function showBillingInfo(method) {
             let info = '';
 
@@ -188,11 +178,9 @@
                 `;
             }
 
-            // Update the billing information without showing alerts
             document.getElementById('billingInfo').innerHTML = info;
         }
 
-        // Redirect to done.html when payment is done
         function redirectToDonePage() {
             window.location.href = `done.html?invoice=${invoiceNumber}`;
         }
