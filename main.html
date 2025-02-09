@@ -1,751 +1,470 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RXO STORE - صيانه</title>
+    <title>RXO Store</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            transition: all 0.3s ease;
         }
-
         body {
             font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
+            background: #f0f2f5;
             min-height: 100vh;
+            padding: 20px;
+            text-align: center;
+            direction: rtl;
+        }
+        .header {
+            padding: 15px;
+            margin-bottom: 30px;
+            color: #1a1a1a;
+        }
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .service-icon {
+            background: white;
+            border-radius: 12px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            cursor: pointer;
+            gap: 5px;
         }
-
-        .container {
-            text-align: center;
-            padding: 20px;
-            max-width: 600px;
-            width: 90%;
+        .service-icon:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
         }
-
-        .logo {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: #2196F3;
-            margin-bottom: 20px;
-            letter-spacing: 2px;
+        .icon-img {
+            width: 60px;
+            height: auto;
         }
-
-        .maintenance-icon {
-            width: 150px;
-            height: 150px;
-            margin: 20px 0;
+        .service-icon h3 {
+            font-size: 14px;
+            margin: 3px 0;
         }
-
-        .loading-dots {
+        .alert-icon {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 20px;
+            height: 20px;
+            background: red;
+            color: white; 
+            border-radius: 50%;
             display: flex;
             justify-content: center;
-            gap: 8px;
-            margin: 20px 0;
+            align-items: center;
+            cursor: pointer;
         }
-
-        .dot {
-            width: 12px;
-            height: 12px;
-            background-color: #2196F3;
-            border-radius: 50%;
-            animation: pulse 1.5s infinite;
-        }
-
-        .dot:nth-child(2) { animation-delay: 0.5s; }
-        .dot:nth-child(3) { animation-delay: 1s; }
-
-        .message {
-            font-size: 1.5rem;
-            color: #333;
-            margin: 20px 0;
-        }
-
-        .timer {
-            font-size: 1.2rem;
+        .price-preview {
+            font-size: 12px;
             font-weight: bold;
-            color: #333;
-            margin-top: 20px;
+            color: #2c3e50;
         }
-
-        .play-button {
-            font-size: 1.5rem;
-            color: #fff;
-            background-color: #2196F3;
-            padding: 10px 20px;
+        .cart-list {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 300px;
+            background-color: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+            display: none;
+            z-index: 10;
+        }
+        .cart-list h3 {
+            margin-bottom: 10px;
+        }
+        .cart-list ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .cart-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        .cart-list .total-price {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .action-button {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        .checkout-button, .cancel-button {
+            background-color: #28a745;
+            color: white;
             border: none;
             border-radius: 5px;
+            padding: 10px 20px;
             cursor: pointer;
-            display: inline-flex;
+        }
+        .checkout-button:hover, .cancel-button:hover {
+            background-color: #218838;
+        }
+        .cart-icon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 30px;
+            cursor: pointer;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+        .cart-icon:hover {
+            background-color: #0056b3;
+        }
+        .toggle-button {
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            border: none;
+            font-size: 20px;
+            display: flex;
+            justify-content: center;
             align-items: center;
-            gap: 10px;
         }
-
-        .play-button:hover {
-            background-color: #1976D2;
+        .toggle-button.add {
+            background-color: #28a745; 
+            color: white;
         }
-
-        .play-button span {
-            font-size: 1.8rem;
-            font-weight: bold;
+        .toggle-button.remove {
+            background-color: #dc3545; 
+            color: white;
         }
-
-        .lyrics {
-            font-size: 1.2rem;
-            color: #333;
-            margin: 10px 0;
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #777;
+            text-align: center;
+        }
+        .product-info-modal {
             display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            z-index: 2000;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
-
-        .lyrics.visible {
-            display: block;
+        .product-info-modal h3 {
+            margin-bottom: 15px;
         }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.3; transform: scale(0.8); }
-            50% { opacity: 1; transform: scale(1); }
+        .product-info-modal .close-button {
+            border: none;
+            background-color: #dc3545;
+            color: white;
+            padding: 8px;
+            border-radius: 5px;
+            cursor: pointer;
         }
-
-        .gear {
-            animation: rotate 4s linear infinite;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        #accountButton, #ordinaryButton {
+            margin: 10px;
+            padding: 8px 16px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="logo">RXO STORE</div>
-        
-        <svg class="maintenance-icon gear" viewBox="0 0 100 100">
-            <path fill="#2196F3" d="M50 25c-13.8 0-25 11.2-25 25s11.2 25 25 25 25-11.2 25-25-11.2-25-25-25zm0 45c-11 0-20-9-20-20s9-20 20-20 20 9 20 20-9 20-20 20z"/>
-            <path fill="#2196F3" d="M50 0c-2.8 0-5 2.2-5 5v10c0 2.8 2.2 5 5 5s5-2.2 5-5V5c0-2.8-2.2-5-5-5zM50 80c-2.8 0-5 2.2-5 5v10c0 2.8 2.2 5 5 5s5-2.2 5-5V85c0-2.8-2.2-5-5-5zM100 50c0-2.8-2.2-5-5-5H85c-2.8 0-5 2.2-5 5s2.2 5 5 5h10c2.8 0 5-2.2 5-5zM20 50c0-2.8-2.2-5-5-5H5c-2.8 0-5 2.2-5 5s2.2 5 5 5h10c2.8 0 5-2.2 5-5z"/>
-        </svg>
 
-        <div class="loading-dots">
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
+    <div class="header">
+        <h1 id="storeTitle">RXO Store</h1>
+        <p id="storeSubtitle">اكتشف أفضل خدمات البث واحصل على عروض حصرية</p>
+        <p>يمكنك معرفة تفاصيل الاشتراك بالضغط على العلامة !</p>
+    </div>
+
+    <div style="margin: 20px 0;">
+        <button class="auth-button" id="accountButton" onclick="showNewProducts()">إلى حسابك</button>
+        <button class="auth-button" id="ordinaryButton" onclick="showOldProducts()">الاعتيادي</button>
+    </div>
+
+    <div class="services-grid" id="servicesGrid"> 
+        <!-- Services -->
+    </div>
+
+    <button class="cart-icon" onclick="toggleCart();">🛒</button>
+
+    <div class="cart-list" id="cartList">
+        <h3>سلة المشتريات</h3>
+        <ul id="cart-list"></ul>
+        <div class="total-price" id="totalPrice">إجمالي: 0 ر.س</div>
+        <div class="action-button">
+            <button class="cancel-button" onclick="closeCart();">إلغاء</button>
+            <button class="checkout-button" onclick="goToPaymentPage();">الدفع</button>
         </div>
+    </div>
 
-        <h1 class="message">الموقع تحت الصيانة</h1>
+    <div class="footer">
+        <p>by ENDUP</p>
+    </div>
 
-        <div class="timer" id="timer">03:45</div>
-
-        <!-- Adding 300 messages -->
-        <div class="lyrics" id="message1">"الحياة جميلة، يجب أن نعتني بها."</div>
-        <div class="lyrics" id="message2">"الوقت هو أغلى ما نملك."</div>
-        <div class="lyrics" id="message3">"تفائل، فكل شيء ممكن."</div>
-        <div class="lyrics" id="message4">"لا تتوقف عن الحلم."</div>
-        <div class="lyrics" id="message5">"اشتغل بجد، النجاح قريب."</div>
-        <div class="lyrics" id="message6">"ابتسم، فابتسامتك تصنع الفرق."</div>
-        <div class="lyrics" id="message7">"تقبل التحديات، فهي سبيلك للنمو."</div>
-        <div class="lyrics" id="message8">"المغامرة تبدأ بخطوة واحدة."</div>
-        <div class="lyrics" id="message9">"كن صادقًا مع نفسك."</div>
-        <div class="lyrics" id="message10">"كل يوم هو فرصة جديدة." </div>
-        <div class="lyrics" id="message11">"فكر بإيجابية، وستجد الحلول."</div>
-        <div class="lyrics" id="message12">"العناد هو مفتاح النجاح." </div>
-        <div class="lyrics" id="message13">"تعلم شيئًا جديدًا كل يوم."</div>
-        <div class="lyrics" id="message14">"الأفعال تتحدث بصوت أعلى من الكلمات."</div>
-        <div class="lyrics" id="message15">"النجاح لا يأتي بسهولة."</div>
-        <div class="lyrics" id="message16">"كن قويًا في مواجهة الصعوبات."</div>
-        <div class="lyrics" id="message17">"لا تنسى أن تستمتع بالطريقة."</div>
-        <div class="lyrics" id="message18">"كل عقبة هي فرصة للتعلم."</div>
-        <div class="lyrics" id="message19">"آمن بنفسك، فأنت قادر على كل شيء."</div>
-        <div class="lyrics" id="message20">"الإبداع هو سر التميز."</div>
-        <div class="lyrics" id="message21">"اختر كلماتك بعناية، فهي تعكس أفكارك."</div>
-        <div class="lyrics" id="message22">"الأحلام لا تتحقق إلا بالعمل."</div>
-        <div class="lyrics" id="message23">"شجع نفسك وكل من حولك."</div>
-        <div class="lyrics" id="message24">"استفد من تجربتك وقدم المساعدة للآخرين."</div>
-        <div class="lyrics" id="message25">"حقق أهدافك بحب وإصرار."</div>
-        <div class="lyrics" id="message26">"كن مرنًا في مواجهة التغييرات."</div>
-        <div class="lyrics" id="message27">"الأيام الحلوة قادمة لا محالة."</div>
-        <div class="lyrics" id="message28">"كل إنسان له قدراته الخاصة."</div>
-        <div class="lyrics" id="message29">"افعل ما تحب وستحقق النجاح."</div>
-        <div class="lyrics" id="message30">"التفاني هو سر الإنتاجية."</div>
-        <div class="lyrics" id="message31">"تقبل النقد بصدر رحب."</div>
-        <div class="lyrics" id="message32">"احرص على بناء علاقات جيدة."</div>
-        <div class="lyrics" id="message33">"لا ترضى بالقليل، طمح للأكثر."</div>
-        <div class="lyrics" id="message34">"كن مبتسمًا في الصعوبات."</div>
-        <div class="lyrics" id="message35">"النجاح يحتاج إلى صبر واصرار."</div>
-        <div class="lyrics" id="message36">"تعلم كيف تحتفل بإنجازاتك."</div>
-        <div class="lyrics" id="message37">"قلل من الشكوك، وعزز الثقة." </div>
-        <div class="lyrics" id="message38">"لا تفرط في التفكير، اتخذ خطوة."</div>
-        <div class="lyrics" id="message39">"كونك مميزًا هو نعمة."</div>
-        <div class="lyrics" id="message40">"اعتن بنفسك لتحقق الأفضل."</div>
-        <div class="lyrics" id="message41">"ضع لنفسك معايير عالية."</div>
-        <div class="lyrics" id="message42">"كل تجربة هي درس في الحياة."</div>
-        <div class="lyrics" id="message43">"لا تهمل صحتك، فهي كنز." </div>
-        <div class="lyrics" id="message44">"كن مرنًا في اتخاذ القرارات."</div>
-        <div class="lyrics" id="message45">"اجعل مساعدة الآخرين جزءًا من حياتك."</div>
-        <div class="lyrics" id="message46">"استمر في التعلم، كلما زادت المعرفة زاد الفهم."</div>
-        <div class="lyrics" id="message47">"الأحلام لا تحقق بدون عمل." </div>
-        <div class="lyrics" id="message48">"استثمر في نفسك، فالعائد سيكون هائلًا."</div>
-        <div class="lyrics" id="message49">"كن مبتكرًا، فالابتكار هو مفتاح التقدم."</div>
-        <div class="lyrics" id="message50">"التركيز على الأهداف يعطي قوة." </div>
-        <div class="lyrics" id="message51">"حافظ على إيجابيتك في أصعب الأوقات."</div>
-        <div class="lyrics" id="message52">"تواصل مع الناس، العلاقات تنميك." </div>
-        <div class="lyrics" id="message53">"ضع لنفسك خطة وابدأ التنفيذ." </div>
-        <div class="lyrics" id="message54">"اعرف قيمة أصدقائك." </div>
-        <div class="lyrics" id="message55">"استمتع بكل لحظة." </div>
-        <div class="lyrics" id="message56">"كن دائمًا على استعداد لتعلم شيء جديد." </div>
-        <div class="lyrics" id="message57">"راقب أفكارك، فهي تصنع حياتك." </div>
-        <div class="lyrics" id="message58">"التوازن هو مفتاح الاستقرار." </div>
-        <div class="lyrics" id="message59">"التحديات هي فرص للنمو." </div>
-        <div class="lyrics" id="message60">"اجعل كل يوم فرصة جديدة لبدء شيء مميز." </div>
-        <div class="lyrics" id="message61">"اختبر قدرتك على الابتكار." </div>
-        <div class="lyrics" id="message62">"الاعتراف بالخطأ هو بداية النجاح." </div>
-        <div class="lyrics" id="message63">"فكر دائمًا في الحلول." </div>
-        <div class="lyrics" id="message64">"تسلق درجات الحياة خطوةً بخطوة." </div>
-        <div class="lyrics" id="message65">"احرص على راحتك النفسية." </div>
-        <div class="lyrics" id="message66">"كن لطيفًا، فالكلمات يمكن أن تحدث فرقًا." </div>
-        <div class="lyrics" id="message67">"ثق بنفسك، فأنت مميز." </div>
-        <div class="lyrics" id="message68">"النجاح يتطلب الشجاعة والاصرار." </div>
-        <div class="lyrics" id="message69">"أحط نفسك بأشخاص محفزين." </div>
-        <div class="lyrics" id="message70">"العطاء هو سر السعادة." </div>
-        <div class="lyrics" id="message71">"استفد من الوقت والجهد بذكاء." </div>
-        <div class="lyrics" id="message72">"سيرك في الحياة يكون بيديك." </div>
-        <div class="lyrics" id="message73">"ابقَ سعيدًا مهما تكن الظروف." </div>
-        <div class="lyrics" id="message74">"احلم بشكل كبير، وابدأ بالأشياء الصغيرة." </div>
-        <div class="lyrics" id="message75">"العزيمة تصنع المستحيل." </div>
-        <div class="lyrics" id="message76">"ابتعد عن السلبية." </div>
-        <div class="lyrics" id="message77">"استمر في الإبداع ولا تخاف من الفشل." </div>
-        <div class="lyrics" id="message78">"امنح نفسك فرصة جديدة كل يوم." </div>
-        <div class="lyrics" id="message79">"استمتع بالرحلة، فالأهداف ليست الهدف الوحيد." </div>
-        <div class="lyrics" id="message80">"كل خطوة نحو الهدف تعتبر نجاحًا." </div>
-        <div class="lyrics" id="message81">"كونك صادقًا هو سر العلاقات القوية." </div>
-        <div class="lyrics" id="message82">"اهتم بصحتك الجسدية والعقلية." </div>
-        <div class="lyrics" id="message83">"جرب دائمًا اكتشاف أشياء جديدة." </div>
-        <div class="lyrics" id="message84">"كن مع شخصيات إيجابية." </div>
-        <div class="lyrics" id="message85">"حافظ على نمط حياتك." </div>
-        <div class="lyrics" id="message86">"الفشل هو جزء من عملية النجاح." </div>
-        <div class="lyrics" id="message87">"احترم الوقت، فكل دقيقة لها قيمتها." </div>
-        <div class="lyrics" id="message88">"ابحث عن الشغف في كل ما تفعله." </div>
-        <div class="lyrics" id="message89">"احتفظ بنظرة إيجابية تجاه الحياة." </div>
-        <div class="lyrics" id="message90">"تطوّر دائمًا، الحياة تتطلب ذلك." </div>
-        <div class="lyrics" id="message91">"كن منفتحًا على الأفكار الجديدة." </div>
-        <div class="lyrics" id="message92">"استثمر في المهارات." </div>
-        <div class="lyrics" id="message93">"تقبل الأخطاء، ولكن تعلم منها." </div>
-        <div class="lyrics" id="message94">"تحدى نفسك لتكون أفضل." </div>
-        <div class="lyrics" id="message95">"استمتع بالأشياء الصغيرة في الحياة." </div>
-        <div class="lyrics" id="message96">"كن متفهمًا للمشاعر." </div>
-        <div class="lyrics" id="message97">"كل شيء يبدأ بفكرة." </div>
-        <div class="lyrics" id="message98">"افعل شيئًا مفيدًا للآخرين كل يوم." </div>
-        <div class="lyrics" id="message99">"لا تنسَ التعبير عن شغفك." </div>
-        <div class="lyrics" id="message100">"اجعل اليوم أفضل من الأمس." </div>
-        <div class="lyrics" id="message101">"كن مرشدًا لمن يحتاج للمساعدة." </div>
-        <div class="lyrics" id="message102">"لا تتردد في اتخاذ قرارات سريعة." </div>
-        <div class="lyrics" id="message103">"امدح الآخرين، فهذا يشجعهم." </div>
-        <div class="lyrics" id="message104">"تقبل النقد، فقد يساعدك في تحسين نفسك." </div>
-        <div class="lyrics" id="message105">"لا تستسلم أمام التحديات." </div>
-        <div class="lyrics" id="message106">"اجعل من الصبر فضيلة." </div>
-        <div class="lyrics" id="message107">"تقبل التغيير، فهو جزء من الحياة." </div>
-        <div class="lyrics" id="message108">"احرص على الابتعاد عن الشائعات." </div>
-        <div class="lyrics" id="message109">"كن مستعدًا لأي مفاجآت في الحياة." </div>
-        <div class="lyrics" id="message110">"تثقف دائمًا، فالمعرفة هي القوة." </div>
-        <div class="lyrics" id="message111">"لا تتحسر على الماضي، ابحث عن المستقبلك." </div>
-        <div class="lyrics" id="message112">"الاتصال بالآخرين يجعل الحياة تستمر." </div>
-        <div class="lyrics" id="message113">"احترم وقت الآخرين." </div>
-        <div class="lyrics" id="message114">"اجمع حولك أشخاصًا يحملون نفس الأفكار." </div>
-        <div class="lyrics" id="message115">"لا تخف من المغامرة." </div>
-        <div class="lyrics" id="message116">"ابحث عن الفرص في التحديات." </div>
-        <div class="lyrics" id="message117">"الفشل هو مجرد خطوة نحو النجاح." </div>
-        <div class="lyrics" id="message118">"كن إنسانًا مؤثرًا في المجتمع." </div>
-        <div class="lyrics" id="message119">"إمكانات كبيرة تملكها، فقط استخدمها." </div>
-        <div class="lyrics" id="message120">"تقبل الهوية التي تملكها." </div>
-        <div class="lyrics" id="message121">"إفعل ما تحب، لأنك تستحق الأفضل." </div>
-        <div class="lyrics" id="message122">"امنح الآخرين فرص مثبتة لهم." </div>
-        <div class="lyrics" id="message123">"تحدث بثقة وحزم." </div>
-        <div class="lyrics" id="message124">"لا تعتذر عن مشاعرك." </div>
-        <div class="lyrics" id="message125">"حافظ على أصالتك." </div>
-        <div class="lyrics" id="message126">"كن مستعدًا للتغيير." </div>
-        <div class="lyrics" id="message127">"انظر للأشياء بطريقة مختلفة." </div>
-        <div class="lyrics" id="message128">"يجب أن نحقق التوازن بين الحياة الشخصية والمهنية." </div>
-        <div class="lyrics" id="message129">"تذكر أن لكل مشكلة حل." </div>
-        <div class="lyrics" id="message130">"اصنع لحظات جميلة مع الأصدقاء." </div>
-        <div class="lyrics" id="message131">"احرص على تنظيم وقتك." </div>
-        <div class="lyrics" id="message132">"ابحث عن ما يجعلك سعيدًا." </div>
-        <div class="lyrics" id="message133">"اهتم بتفاصيل الأمور." </div>
-        <div class="lyrics" id="message134">"عش كل لحظة وكأنها الأخيرة." </div>
-        <div class="lyrics" id="message135">"الاستثمار في نفسك هو أفضل استثمار." </div>
-        <div class="lyrics" id="message136">"ابتعد عن الأشخاص السلبيين." </div>
-        <div class="lyrics" id="message137">"كن مثالًا للإنسانية." </div>
-        <div class="lyrics" id="message138">"احرص على ممارسة الرياضة بانتظام." </div>
-        <div class="lyrics" id="message139">"كن كائنًا ملهمًا." </div>
-        <div class="lyrics" id="message140">"استمتع بممارسة الأشياء التي تحبها." </div>
-        <div class="lyrics" id="message141">"اجعل أولوياتك واضحة." </div>
-        <div class="lyrics" id="message142">"احترم جميع الآراء، حتى لو اختلفت معها." </div>
-        <div class="lyrics" id="message143">"كن شغوفًا بما تعمل عليه." </div>
-        <div class="lyrics" id="message144">"تسلم عن نجاحات الأخرين." </div>
-        <div class="lyrics" id="message145">"تجنب التوتر بالحفاظ على هدوئك." </div>
-        <div class="lyrics" id="message146">"احصل على قسط كافٍ من النوم." </div>
-        <div class="lyrics" id="message147">"حدد الأهداف القابلة للتحقيق." </div>
-        <div class="lyrics" id="message148">"اجعل من الهزائم دروسًا قيمة." </div>
-        <div class="lyrics" id="message149">"كن متحمسًا لأفكارك." </div>
-        <div class="lyrics" id="message150">"سنبدأ دائمًا من اليوم، ليس غدًا." </div>
-        <div class="lyrics" id="message151">"استمتع بعملية التعلم." </div>
-        <div class="lyrics" id="message152">"ابقَ فضولياً وابحث دائمًا عن المعلومات." </div>
-        <div class="lyrics" id="message153">"في كل صعوبة توجد فرص." </div>
-        <div class="lyrics" id="message154">"تقبل أنك غير مثالي، فهذا طبيعي." </div>
-        <div class="lyrics" id="message155">"احترم مشاعر الآخرين." </div>
-        <div class="lyrics" id="message156">"استمد الدافع من تجارب الآخرين." </div>
-        <div class="lyrics" id="message157">"استعد دائمًا لأوقات الفشل." </div>
-        <div class="lyrics" id="message158">"اجعل من النجاح أسلوب حياة." </div>
-        <div class="lyrics" id="message159">"احرص على النظافة الشخصية." </div>
-        <div class="lyrics" id="message160">"اختر أصدقائك بعناية." </div>
-        <div class="lyrics" id="message161">"صنع الذكريات أجمل من صنع المال." </div>
-        <div class="lyrics" id="message162">"كن فخورًا بنفسك." </div>
-        <div class="lyrics" id="message163">"اجعل لحظات السعادة تأتي بكثرة." </div>
-        <div class="lyrics" id="message164">"استفد من خبرات الحياة." </div>
-        <div class="lyrics" id="message165">"اجعل من الأخطاء فرص للإبداع." </div>
-        <div class="lyrics" id="message166">"تقبل فكرة أن يكون التغيير للخير." </div>
-        <div class="lyrics" id="message167">"كونك لطيفًا ليس ضعفًا, بل هو قوة." </div>
-        <div class="lyrics" id="message168">"حافظ على ممتلكاتك، فهي تعكس شخصيتك." </div>
-        <div class="lyrics" id="message169">"عش كل يوم كما لو كان آخر يوم." </div>
-        <div class="lyrics" id="message170">"اعمل بجد، اضحك بجد." </div>
-        <div class="lyrics" id="message171">"نشر الحب يحدث فرقًا." </div>
-        <div class="lyrics" id="message172">"كلما زادت التجارب، زادت الحكمة." </div>
-        <div class="lyrics" id="message173">"احضر ورش العمل لتطوير نفسك." </div>
-        <div class="lyrics" id="message174">"كن حذرًا، فالأشياء الصغيرة مهمة." </div>
-        <div class="lyrics" id="message175">"اجعل من كل يوم يوم جديد للتحسين." </div>
-        <div class="lyrics" id="message176">"تذكر أن السعادة اختيار." </div>
-        <div class="lyrics" id="message177">"استمتع بمساحة الهدوء." </div>
-        <div class="lyrics" id="message178">"العيش بحماس يمنحك طاقة إيجابية." </div>
-        <div class="lyrics" id="message179">"كن مصدر إلهام للآخرين." </div>
-        <div class="lyrics" id="message180">"افعل ما في وسعك، والنتائج ستأتي." </div>
-        <div class="lyrics" id="message181">"المثابرة تحصد النجاح." </div>
-        <div class="lyrics" id="message182">"كن متفائلاً، فالسعادة قريبة." </div>
-        <div class="lyrics" id="message183">"اهتم بتفاصيل الحياة اليومية." </div>
-        <div class="lyrics" id="message184">"تطوع لمساعدة الآخرين، فكر بالتغيير." </div>
-        <div class="lyrics" id="message185">"استخدم التكنولوجيا بطريقة إيجابية." </div>
-        <div class="lyrics" id="message186">"استمتع بالأشياء البسيطة." </div>
-        <div class="lyrics" id="message187">"كلما تعلمت أكثر، كلما زادت إمكانياتك." </div>
-        <div class="lyrics" id="message188">"امرح في التعلم، فالمدرسة الحياة." </div>
-        <div class="lyrics" id="message189">"استمتع بوقتك مع من تحب." </div>
-        <div class="lyrics" id="message190">"كن مطمئنًا، فأنتم على الطريق الصحيح." </div>
-        <div class="lyrics" id="message191">"اجعل من هذه اللحظة أجمل لحظة في حياتك." </div>
-        <div class="lyrics" id="message192">"أدعِ الآخرين للابتسام، فهم يستحقون ذلك." </div>
-        <div class="lyrics" id="message193">"تشارك مع الآخرين لحظات السعادة." </div>
-        <div class="lyrics" id="message194">"اصنع الذكريات الجميلة." </div>
-        <div class="lyrics" id="message195">"استمتع بحياتك، فكل لحظة تحتسب." </div>
-        <div class="lyrics" id="message196">"عش كل لحظة بمرونة." </div>
-        <div class="lyrics" id="message197">"حافظ على تفاؤلك مهما كانت الظروف." </div>
-        <div class="lyrics" id="message198">"التغيير يمكن أن يكون مفيدًا." </div>
-        <div class="lyrics" id="message199">"اجعل غدك أفضل من اليوم." </div>
-        <div class="lyrics" id="message200">"اقضي وقتًا مع عائلتك، فهم أغلى ما تملك." </div>
-        <div class="lyrics" id="message201">"استرخِ وأعد شحن طاقتك."</div>
-        <div class="lyrics" id="message202">"كن مسؤولًا عن أفعالك." </div>
-        <div class="lyrics" id="message203">"تعلم شيئًا جديدًا كل يوم." </div>
-        <div class="lyrics" id="message204">"لا تتردد في إجراء تغييرات إيجابية." </div>
-        <div class="lyrics" id="message205">"لا تتظاهر، كن نفسك دائمًا." </div>
-        <div class="lyrics" id="message206">"اهتم بحالتك النفسية." </div>
-        <div class="lyrics" id="message207">"حقق أحلامك، حتى لو كانت كبيرة." </div>
-        <div class="lyrics" id="message208">"اعرف نفسك، فهذا هو مفتاح النجاح." </div>
-        <div class="lyrics" id="message209">"كن مشجعًا للآخرين." </div>
-        <div class="lyrics" id="message210">"استمتع بكل شيء في الحياة." </div>
-        <div class="lyrics" id="message211">"اجعل من النقد دافعًا للتحسين." </div>
-        <div class="lyrics" id="message212">"تعلم كيفية التعامل مع الفشل." </div>
-        <div class="lyrics" id="message213">"احترم كل شخص، فهم مختلفون." </div>
-        <div class="lyrics" id="message214">"تذكر أن عليك اتخاذ خطوات صغيرة." </div>
-        <div class="lyrics" id="message215">"اجعل من الابتسامة عادة." </div>
-        <div class="lyrics" id="message216">"لا تفقد الأمل، فغدًا هو يوم جديد." </div>
-        <div class="lyrics" id="message217">"استمتع باللحظات الجميلة." </div>
-        <div class="lyrics" id="message218">"اجعل من الإيجابية عادة حياتية." </div>
-        <div class="lyrics" id="message219">"ابحث دائمًا عن الخطة البديلة." </div>
-        <div class="lyrics" id="message220">"استثمر في بناء العلاقات." </div>
-        <div class="lyrics" id="message221">"اعمل بجد، الفشل ليس خيارًا." </div>
-        <div class="lyrics" id="message222">"اختر النعيم على عذاب نفسك." </div>
-        <div class="lyrics" id="message223">"حافظ على تفاؤلك، الهموم لا تدوم." </div>
-        <div class="lyrics" id="message224">"امضِ قدمًا، حتى إذا كان الطريق صعبًا." </div>
-        <div class="lyrics" id="message225">"تقبل فكرة أنه ليس الجميع سيفهمك." </div>
-        <div class="lyrics" id="message226">"كوني مرشدًا للآخرين، فهذا مفيد." </div>
-        <div class="lyrics" id="message227">"شجع نفسك على التقدم." </div>
-        <div class="lyrics" id="message228">"أنت تكتب قصة حياتك، اجعلها رائعة." </div>
-        <div class="lyrics" id="message229">"لا تتردد في إحاطة نفسك بالإيجابيين." </div>
-        <div class="lyrics" id="message230">"عش باستمتاع بالغد." </div>
-        <div class="lyrics" id="message231">"على الرغم من الفشل، واصل المحاولة." </div>
-        <div class="lyrics" id="message232">"تذكر، كل فرد له قيمته الخاصة." </div>
-        <div class="lyrics" id="message233">"انظر إلى النصف الممتلئ من الكأس." </div>
-        <div class="lyrics" id="message234">"كافئ نفسك على الإنجازات." </div>
-        <div class="lyrics" id="message235">"لا تنس الاستمتاع بوقتك." </div>
-        <div class="lyrics" id="message236">"كن الشخص الذي تريد أن تتجاوزه." </div>
-        <div class="lyrics" id="message237">"اجعل من الصبر رفيقك." </div>
-        <div class="lyrics" id="message238">"اعلم أنه يمكنك أن تكون قائدًا." </div>
-        <div class="lyrics" id="message239">"لا شيء مستحيل مع الإرادة." </div>
-        <div class="lyrics" id="message240">"كن شجاعًا، العالم يحتاج إلى الشجعان." </div>
-        <div class="lyrics" id="message241">"ابتسم في وجه الصعوبات." </div>
-        <div class="lyrics" id="message242">"تجنب الاستسلام، فالصبر مفتاح الفرج." </div>
-        <div class="lyrics" id="message243">"اتبع شغفك، فسوف يقودك إلى النجاح." </div>
-        <div class="lyrics" id="message244">"فكر في البدائل، فخطط الحياة ليست ثابتة." </div>
-        <div class="lyrics" id="message245">"اجعل من التعلم مستمر في حياتك." </div>
-        <div class="lyrics" id="message246">"احلم، وكن مستعدًا لتحقيق أحلامك." </div>
-        <div class="lyrics" id="message247">"العطاء يجعل الحياة تستحق العيش." </div>
-        <div class="lyrics" id="message248">"تقبل مشاعرك، فهي جزء من الحياة." </div>
-        <div class="lyrics" id="message249">"استعمل خيالك، فهو أداة قوية." </div>
-        <div class="lyrics" id="message250">"اجعل من الكتابة جزءًا من حياتك." </div>
-        <div class="lyrics" id="message251">"التركيز هو طريق النجاح." </div>
-        <div class="lyrics" id="message252">"احتفظ بحبك للمعرفة." </div>
-        <div class="lyrics" id="message253">"اعتن بنفسك، فأنت تستحق الرعاية." </div>
-        <div class="lyrics" id="message254">"اطلب المساعدة عند الحاجة." </div>
-        <div class="lyrics" id="message255">"قدّم المساعدة لمن يحتاجها، فهي تعيد لك الغطاء بأضعاف." </div>
-        <div class="lyrics" id="message256">"شارك أفكارك، فالتعبير عن نفسك مهم." </div>
-        <div class="lyrics" id="message257">"حقّق أهدافك بخطوات صغيرة." </div>
-        <div class="lyrics" id="message258">"حافظ على روح التنافس." </div>
-        <div class="lyrics" id="message259">"كن شغوفًا، واحتفظ بالطاقة." </div>
-        <div class="lyrics" id="message260">"يجب عدم الاستسلام، فالفوز يأتي بعد الإخفاق." </div>
-        <div class="lyrics" id="message261">"كن لديك الحماس لشغلك." </div>
-        <div class="lyrics" id="message262">"استمتع بكل لحظة." </div>
-        <div class="lyrics" id="message263">"تجنب القلق، فالأمور ستصلح." </div>
-        <div class="lyrics" id="message264">"كافئ نفسك كأجمل هدية ممكنة." </div>
-        <div class="lyrics" id="message265">"استفد من تجارب الحياة." </div>
-        <div class="lyrics" id="message266">"اطمح دائمًا لما هو أكبر." </div>
-        <div class="lyrics" id="message267">"عش كل لحظة كأنها الأخيرة." </div>
-        <div class="lyrics" id="message268">"لا تتردد في التغيير، فهو جيد." </div>
-        <div class="lyrics" id="message269">"استفد من أحلامك." </div>
-        <div class="lyrics" id="message270">"اغتنم الفرص عندما تأتي." </div>
-        <div class="lyrics" id="message271">"كن صادقًا، فالصراحة تجلب السلام." </div>
-        <div class="lyrics" id="message272">"افهم الآخرين، ذلك سيسهل كل شيء." </div>
-        <div class="lyrics" id="message273">"استمتع بصحبتك، فالصداقة جميلة." </div>
-        <div class="lyrics" id="message274">"تذكر أن الفشل جزء من النجاح." </div>
-        <div class="lyrics" id="message275">"ابحث عن السعادة في كل شيء." </div>
-        <div class="lyrics" id="message276">"حافظ على إصرارك، فهو طريق النجاح." </div>
-        <div class="lyrics" id="message277">"كن دائمًا على استعداد للمواجهة." </div>
-        <div class="lyrics" id="message278">"اجعل من التصميم جزءًا من حياتك." </div>
-        <div class="lyrics" id="message279">"ثق بنفسك، فأنت أقوى مما تعتقد." </div>
-        <div class="lyrics" id="message280">"شارك معرفتك مع الآخرين." </div>
-        <div class="lyrics" id="message281">"لا تخاف من مواجهة التحديات." </div>
-        <div class="lyrics" id="message282">"كن دائمًا صادقًا، فالصدق هو القوة." </div>
-        <div class="lyrics" id="message283">"حافظ على الإيجابية في التعلم." </div>
-        <div class="lyrics" id="message284">"احترم البيئة، فهي بيتنا جميعًا." </div>
-        <div class="lyrics" id="message285">"اجعل من الاستماع عادة." </div>
-        <div class="lyrics" id="message286">"اعتن بصحتك النفسية والجسدية." </div>
-        <div class="lyrics" id="message287">"كن دائمًا مرنًا في التفكير." </div>
-        <div class="lyrics" id="message288">"ابحث عن الإلهام في كل مكان." </div>
-        <div class="lyrics" id="message289">"كن شغوفًا بتعلم مهارات جديدة." </div>
-        <div class="lyrics" id="message290">"احترم الفرق بين الأشخاص." </div>
-        <div class="lyrics" id="message291">"تجنب الاحتفاظ بالكراهية." </div>
-        <div class="lyrics" id="message292">"كن صبورًا، فالنجاح يأتي لمن ينتظر." </div>
-        <div class="lyrics" id="message293">"احصل على قسط كافٍ من الراحة." </div>
-        <div class="lyrics" id="message294">"احمل الابتسامة في قلبك." </div>
-        <div class="lyrics" id="message295">"تطوير نفسك هو مفتاح النجاح." </div>
-        <div class="lyrics" id="message296">"كن دافعًا للخير في الحياة." </div>
-        <div class="lyrics" id="message297">"افهم مشاعر الآخرين واعترف بها." </div>
-        <div class="lyrics" id="message298">"احتفل بكل إنجاز تحققه." </div>
-        <div class="lyrics" id="message299">"كن مستعدًا لتقبل الانتقادات." </div>
-        <div class="lyrics" id="message300">"استمتع بكل لحظة من حياتك، فهي قصيرة." </div>
-        <div class="lyrics" id="message301">"التغيير يبدأ من داخلك."</div>
-        <div class="lyrics" id="message302">"اغتنم الفرص، فقد لا تتكرر."</div>
-        <div class="lyrics" id="message303">"العطاء هو أجمل أسلوب للعيش."</div>
-        <div class="lyrics" id="message304">"كل يوم هو فرصة جديدة لتحقيق أحلامك."</div>
-        <div class="lyrics" id="message305">"صنع السعادة يبدأ بإيجادها داخل النفس."</div>
-        <div class="lyrics" id="message306">"امنح نفسك الوقت لتتعلم وتنمو."</div>
-        <div class="lyrics" id="message307">"الحياة مليئة بالتحديات، لكنك أقوى مما تعتقد."</div>
-        <div class="lyrics" id="message308">"لا تخف من الفشل، فهو خطوة نحو النجاح."</div>
-        <div class="lyrics" id="message309">"كل تجربة تضيف إلى خبرتك وحكمتك."</div>
-        <div class="lyrics" id="message310">"قم بما تحب، وستنجح في ذلك."</div>
-        <div class="lyrics" id="message311">"كن قائدًا في حياتك، ولا تنتظر أن يقودك الآخرون."</div>
-        <div class="lyrics" id="message312">"قوة العزيمة تحتفظ بك في المسار الصحيح."</div>
-        <div class="lyrics" id="message313">"ابحث عن الجمال في الأشياء الصغيرة."</div>
-        <div class="lyrics" id="message314">"كن إيجابيًا، وسترَ الأمور تتغير من حولك."</div>
-        <div class="lyrics" id="message315">"التحدي هو ما يجعل الحياة ممتعة."</div>
-        <div class="lyrics" id="message316">"اجعل هدفك واضحًا، وستجد الطريق."</div>
-        <div class="lyrics" id="message317">"تعلم أن تقول لا، لحماية نفسك."</div>
-        <div class="lyrics" id="message318">"الأفكار الإيجابية تجذب الفرص."</div>
-        <div class="lyrics" id="message319">"احصل على مساعدات إن كنت بحاجة لها."</div>
-        <div class="lyrics" id="message320">"الشكر هو مفتاح السعادة."</div>
-        <div class="lyrics" id="message321">"تقبل نفسك كما أنت، فكل شخص فريد."</div>
-        <div class="lyrics" id="message322">"اصنع فارقًا في حياة الآخرين."</div>
-        <div class="lyrics" id="message323">"اغمر نفسك في الأنشطة التي تحبها."</div>
-        <div class="lyrics" id="message324">"الابتسامة هي أفضل علاج."</div>
-        <div class="lyrics" id="message325">"كن محفزًا للغير، وستجد الدعم."</div>
-        <div class="lyrics" id="message326">"لا تخاف من الخطأ، فهو يفتح الباب للاستمرار."</div>
-        <div class="lyrics" id="message327">"احتفل بكل لحظة من الحياة، فهي فرصة للاستمتاع."</div>
-        <div class="lyrics" id="message328">"لا تقلق عن المستقبل، فإنه يأتي بمفرده."</div>
-        <div class="lyrics" id="message329">"كن شجاعًا في مواجهة الأخطار."</div>
-        <div class="lyrics" id="message330">"لا تقم بالأشياء بسبب ما يأمل الآخرون."</div>
-        <div class="lyrics" id="message331">"كن مصدرًا للفرح في حياة الآخرين."</div>
-        <div class="lyrics" id="message332">"لا تعتبر الأخطاء عيوبًا."</div>
-        <div class="lyrics" id="message333">"كن حارسًا لذاكرتك، فهي منزلك في الحياة."</div>
-        <div class="lyrics" id="message334">"لا تنتظر حتى يأتي شخص آخر ليقدم الدعم."</div>
-        <div class="lyrics" id="message335">"كن قويًا، ولا تخجل من السؤال."</div>
-        <div class="lyrics" id="message336">"لا تخاف من التغيرات، فهي جزء من الحياة."</div>
-        <div class="lyrics" id="message337">"كن شاكرًا، ولا تكن مغبترًا."</div>
-        <div class="lyrics" id="message338">"لا تقلق عن ما يحدث مع الآخرين."</div>
-        <div class="lyrics" id="message339">"كن محفزًا للآخرين، وستجد الدعم."</div>
-        <div class="lyrics" id="message340">"لا تعتبر الأخطاء فرصًا للاستبعاد."</div>
-        <div class="lyrics" id="message341">"كن حارسًا للذاكرة، فهي منظرتك في الحياة."</div>
-        <div class="lyrics" id="message342">"لا تنتظر حتى يأتي الوقت المناسب."</div>
-        <div class="lyrics" id="message343">"كن دافعًا للتحسين، دائمًا."</div>
-        <div class="lyrics" id="message344">"احفظ الحلم في قلبك، واتبعه."</div>
-        <div class="lyrics" id="message345">"العزيمة تصنع المعجزات."</div>
-        <div class="lyrics" id="message346">"كن إيجابيًا حتى في الأوقات الصعبة."</div>
-        <div class="lyrics" id="message347">"اجعل الفشل فرصة للتعلم والنمو."</div>
-        <div class="lyrics" id="message348">"احتفل بإنجازاتك الصغيرة، فهي مهمّة."</div>
-        <div class="lyrics" id="message349">"كل لحظة هي فرصة لتغيير حياتك."</div>
-        <div class="lyrics" id="message350">"لا تدع العقبات تمنعك من التقدم."</div>
-        <div class="lyrics" id="message351">"ابحث عن الإلهام في كل شيء حولك."</div>
-        <div class="lyrics" id="message352">"كن دائمًا على استعداد لمساعدة الآخرين."</div>
-        <div class="lyrics" id="message353">"اجعل شغفك مرشدك في الحياة."</div>
-        <div class="lyrics" id="message354">"استمع إلى قلبك، فهو يعرف الطريق."</div>
-        <div class="lyrics" id="message355">"لا تنسَ أهمية الراحة وتجديد الطاقة."</div>
-        <div class="lyrics" id="message356">"كلما عملت بجد، كلما زادت فرصك."</div>
-        <div class="lyrics" id="message357">"قوة الإيمان بنفسك تفوق كل شيء."</div>
-        <div class="lyrics" id="message358">"كن مرنًا، تقلبات الحياة تجعلنا أقوى."</div>
-        <div class="lyrics" id="message359">"تعلم كيفية إدارة مشاعرك بحكمة."</div>
-        <div class="lyrics" id="message360">"احرص على اختيار أصدقائك بعناية."</div>
-        <div class="lyrics" id="message361">"اجعل كل يوم فرصة جديدة للبداية."</div>
-        <div class="lyrics" id="message362">"الأفكار الإيجابية تصنع واقعًا جميلًا."</div>
-        <div class="lyrics" id="message363">"دائمًا ابحث عن سبب للسعادة في حياتك."</div>
-        <div class="lyrics" id="message364">"خذ قسطًا من الوقت لرعاية نفسك."</div>
-        <div class="lyrics" id="message365">"ارسم ابتسامة على وجهك كل صباح."</div>
-        <div class="lyrics" id="message366">"دع العواطف الإيجابية تسود حياتك."</div>
-        <div class="lyrics" id="message367">"ابتعد عن السلبية، فهي تعيق تقدمك."</div>
-        <div class="lyrics" id="message368">"احمل طاقة إيجابية في حياتك اليومية."</div>
-        <div class="lyrics" id="message369">"تقبل التحديات، فهي فرص للنمو."</div>
-        <div class="lyrics" id="message370">"استثمر في نفسك، فهي أفضل استثمار."</div>
-        <div class="lyrics" id="message371">"كن المثال الذي تريد رؤيته في العالم."</div>
-        <div class="lyrics" id="message372">"كلما كنت صادقًا مع نفسك، زادت قوتك."</div>
-        <div class="lyrics" id="message373">"تقبل الأخطاء، فهي جزء من التعلم."</div>
-        <div class="lyrics" id="message374">"كن ملتزمًا بأهدافك، ولا تتراجع."</div>
-        <div class="lyrics" id="message375">"استغل وقتك بحكمة لتحقيق أحلامك."</div>
-        <div class="lyrics" id="message376">"النجاح يتطلب العمل الجاد والاستمرارية."</div>
-        <div class="lyrics" id="message377">"اجعل كل لحظة لها قيمتها، فهي فريدة."</div>
-        <div class="lyrics" id="message378">"لا تنسَ التقدّم الذي حققته حتى الآن."</div>
-        <div class="lyrics" id="message379">"كن لطيفًا مع نفسك كما أنت مع الآخرين."</div>
-        <div class="lyrics" id="message380">"استمتع بكل لحظة، فلن تتكرر مرة أخرى."</div>
-        <div class="lyrics" id="message381">"اعمل بجد، لكن لا تنسَ الاستمتاع."</div>
-        <div class="lyrics" id="message382">"أنت capable of achieving great things."</div>
-        <div class="lyrics" id="message383">"كوني نفسك، فالعالم بحاجة إلى تفردك."</div>
-        <div class="lyrics" id="message384">"استرخِ، واستمتع بلحظات الحياة."</div>
-        <div class="lyrics" id="message385">"لا تعقد الأمور، ابسط كل شيء."</div>
-        <div class="lyrics" id="message386">"ركز على الحلول بدلًا من المشاكل."</div>
-        <div class="lyrics" id="message387">"كن صادقًا في مشاعرك وأفكارك."</div>
-        <div class="lyrics" id="message388">"اسعى لتحقيق أحلامك بشغف وإصرار."</div>
-        <div class="lyrics" id="message389">"السعادة هي نتيجة العمل الجاد والعديد من اللحظات الجميلة."</div>
-        <div class="lyrics" id="message390">"لا تتردد في اتخاذ الخطوة الأولى نحو النجاح."</div>
-        <div class="lyrics" id="message391">"احلم كبيرًا، وثق بنفسك الواقع."</div>
-        <div class="lyrics" id="message392">"كن منفتحًا على التعلم من الآخرين."</div>
-        <div class="lyrics" id="message393">"احرص على تكوين علاقات إيجابية ومُلهمة."</div>
-        <div class="lyrics" id="message394">"ابتسم، فابتسامتك رائعة وملهمة للآخرين."</div>
-        <div class="lyrics" id="message395">"كلما أثرت إيجابيًا في حياة الآخرين، فقد أثرت في حياتك أيضًا."</div>
-        <div class="lyrics" id="message396">"استمتع بالرحلة، وليست وجهتك فقط."</div>
-        <div class="lyrics" id="message397">"كن صريحًا ومخلصًا في تفاعلاتك مع الآخرين."</div>
-        <div class="lyrics" id="message398">"اشعر بالامتنان لكل ما لديك."</div>
-        <div class="lyrics" id="message399">"لا تنسَ كيف كنت قويًا في الأوقات الصعبة."</div>
-        <div class="lyrics" id="message400">"أحيانًا تحتاج إلى استراحة لتحديد وجهتك."</div>
-        <div class="lyrics" id="message401">"كن مصدر إلهام لمن حولك."</div>
-        <div class="lyrics" id="message402">"اجعل من كل تحدٍّ فرصة للتطور."</div>
-        <div class="lyrics" id="message403">"العالم مليء بالفرص، ابحث عنها."</div>
-        <div class="lyrics" id="message404">"لا تستسلم، فإنك على وشك تحقيق شيء عظيم."</div>
-        <div class="lyrics" id="message405">"تعلم من كل تجربة، سواء كانت جيدة أو سيئة."</div>
-        <div class="lyrics" id="message406">"كلما كان لديك الشغف، كلما كان العمل أسهل."</div>
-        <div class="lyrics" id="message407">"اجعل الفشل درسًا وليس نهاية."</div>
-        <div class="lyrics" id="message408">"استمتع بالتفاصيل الصغيرة في حياتك."</div>
-        <div class="lyrics" id="message409">"استمر في الكفاح، فكل يوم هو خطوة نحو تحقيق الأحلام."</div>
-        <div class="lyrics" id="message410">"كن نفسك، فهناك من يحتاج إلى ما لديك."</div>
-        <div class="lyrics" id="message411">"لا تتردد في إظهار وفي نفسك."</div>
-        <div class="lyrics" id="message412">"اجعل التحسين المستمر جزءًا من حياتك."</div>
-        <div class="lyrics" id="message413">"استمع لنصائح الآخرين، لكن اختر ما يناسبك."</div>
-        <div class="lyrics" id="message414">"كن منفتحًا على الأفكار الجديدة."</div>
-        <div class="lyrics" id="message415">"احرص على النوم الجيد، فهو مفتاح النشاط."</div>
-        <div class="lyrics" id="message416">"احتفظ بمرونة تفكيرك لتحقق إمكانياتك." </div>
-        <div class="lyrics" id="message417">"تقبل التغيير، فهو جزء من الحياة." </div>
-        <div class="lyrics" id="message418">"دائمًا ابحث عن النور في الظلام." </div>
-        <div class="lyrics" id="message419">"كن إيجابيًا، فالفكر هو قوة ساحرة." </div>
-        <div class="lyrics" id="message420">"لا تسمح للماضي أن يؤثر على مستقبلك." </div>
-        <div class="lyrics" id="message421">"بدلاً من الشكوى، ابحث عن الحلول." </div>
-        <div class="lyrics" id="message422">"دع أحلامك تعمل كدافع لك." </div>
-        <div class="lyrics" id="message423">"لا تخجل من تطلعاتك وأهدافك." </div>
-        <div class="lyrics" id="message424">"أضع نفسك بين الأشخاص الذين يلهمونك." </div>
-        <div class="lyrics" id="message425">"احتفل بنجاحاتك مهما كانت صغيرة." </div>
-        <div class="lyrics" id="message426">"احصل على وقتك الخاص، فهو ضروري." </div>
-        <div class="lyrics" id="message427">"اتخذ قرارات من القلب، فهي أكثر صدقًا." </div>
-        <div class="lyrics" id="message428">"ابقَ جزائريًا، فالفخر يحمل طاقة إيجابية." </div>
-        <div class="lyrics" id="message429">"احمد الله على كل ما لديك." </div>
-        <div class="lyrics" id="message430">"شجع الآخرين على التقدم." </div>
-        <div class="lyrics" id="message431">"تحدي نفسك كل يوم لتكون أفضل." </div>
-        <div class="lyrics" id="message432">"لا تتردد في طلب المساعدة عند الحاجة." </div>
-        <div class="lyrics" id="message433">"ابحث عن الدافع في الأشياء المحيطة بك." </div>
-        <div class="lyrics" id="message434">"استمع أكثر مما تتحدث." </div>
-        <div class="lyrics" id="message435">"قم بأشياء جديدة، فلن تندم أبدًا." </div>
-        <div class="lyrics" id="message436">"كن صبورًا، فالنتائج تأتي مع الزمن." </div>
-        <div class="lyrics" id="message437">"تقبل الانتقادات بحكمة، واستخدمها للنمو." </div>
-        <div class="lyrics" id="message438">"اجعل كل يوم بداية جديدة." </div>
-        <div class="lyrics" id="message439">"استمتع بالتجارب الجديدة، فهي تثري روحك." </div>
-        <div class="lyrics" id="message440">"كن متحمسًا لكل ما تفعله." </div>
-        <div class="lyrics" id="message441">"اجعل من كل تحدٍّ فرصة للتعلم." </div>
-        <div class="lyrics" id="message442">"كلما تأخرت في التنفيذ، زادت الصعوبة." </div>
-        <div class="lyrics" id="message443">"كن مليئًا بالأمل، فالأيام الأسوأ ستنتهي." </div>
-        <div class="lyrics" id="message444">"اترك أثرًا إيجابيًا في حياة كل من تقابلهم." </div>
-        <div class="lyrics" id="message445">"العلاقات الجيدة تعزز من جودة الحياة." </div>
-        <div class="lyrics" id="message446">"تذكر أن النجاح ليس هدفًا، إنه رحلة." </div>
-        <div class="lyrics" id="message447">"عامل الآخرين كما تحب أن تُعامل." </div>
-        <div class="lyrics" id="message448">"ابحث عن السلام الداخلي حتى في الزحام." </div>
-        <div class="lyrics" id="message449">"اختَر أن تكون مبدعًا في أي موقف." </div>
-        <div class="lyrics" id="message450">"اجعل كل قرار يعكس قيمك." </div>
-        <div class="lyrics" id="message451">"احرص على تجاوز منطقة راحتك." </div>
-        <div class="lyrics" id="message452">"احترم آراء الآخرين، حتى وإن اختلفت." </div>
-        <div class="lyrics" id="message453">"املأ أيامك بالأنشطة التي تحبها." </div>
-        <div class="lyrics" id="message454">"تعلم شيئًا جديدًا كل يوم." </div>
-        <div class="lyrics" id="message455">"سواء كنت تتحرك ببطء، أو بسرعة، استمر في التحرك." </div>
-        <div class="lyrics" id="message456">"احرص على أن تكون مع الناس الذين يشجعونك." </div>
-        <div class="lyrics" id="message457">"اكتب أهدافك حتى تستوعبها جيدًا." </div>
-        <div class="lyrics" id="message458">"لديك القدرة على بناء الحياة التي ترغبين بها." </div>
-        <div class="lyrics" id="message459">"استمتع بسرعة الحياة، ولا تفوت لحظاتها." </div>
-        <div class="lyrics" id="message460">"اجعل من كل تجربة مغامرة." </div>
-        <div class="lyrics" id="message461">"اعترف بإنجازاتك واكتفي بها." </div>
-        <div class="lyrics" id="message462">"ضع خططك وأبدأ التنفيذ الآن." </div>
-        <div class="lyrics" id="message463">"كن فخورًا بما حققته حتى الآن." </div>
-        <div class="lyrics" id="message464">"اترك مساحة للإبداع في حياتك." </div>
-        <div class="lyrics" id="message465">"اجعل من التغيير صديقًا، وليس عدوًا." </div>
-        <div class="lyrics" id="message466">"ابحث عن الحماس في كل شيء." </div>
-        <div class="lyrics" id="message467">"كلما أعطيت، كلما زاد ما لديك." </div>
-        <div class="lyrics" id="message468">"دع شغفك يوجهك، فهو يعرف الطريق." </div>
-        <div class="lyrics" id="message469">"حافظ على الإيجابية حتى في الأوقات الصعبة." </div>
-        <div class="lyrics" id="message470">"خصص وقتًا لنفسك، فهو مهم لصحتك." </div>
-        <div class="lyrics" id="message471">"احرص على موازنة حياتك العملية والشخصية." </div>
-        <div class="lyrics" id="message472">"تقبل عيوبك، فهي جزء من شخصيتك." </div>
-        <div class="lyrics" id="message473">"كلما كان لديك الإيمان، كلما حظيت بالنجاح." </div>
-        <div class="lyrics" id="message474">"الاستمرارية تعني النجاح." </div>
-        <div class="lyrics" id="message475">"كن مصدرًا للثقة لنفسك وللآخرين." </div>
-        <div class="lyrics" id="message476">"استمتع بالسفر، فهو يفتح آفاق جديدة." </div>
-        <div class="lyrics" id="message477">"تقبل الخسارة كجزء من اللعبة." </div>
-        <div class="lyrics" id="message478">"تحدث بإيجابية عن نفسك، فهي تؤثر فيك." </div>
-        <div class="lyrics" id="message479">"احتفظ بروح المرح في حياتك." </div>
-        <div class="lyrics" id="message480">"تحدّى نفسك واخرج من منطقة الراحة." </div>
-        <div class="lyrics" id="message481">"سعيك لتحقيق الأحلام هو ما يجعل الحياة مميزة." </div>
-        <div class="lyrics" id="message482">"استمع لنصائح الخبراء، ولكن كن مستقلًا في قرارك." </div>
-        <div class="lyrics" id="message483">"خصص وقتًا للتأمل والاسترخاء." </div>
-        <div class="lyrics" id="message484">"تجنب الدراما، فالحياة أقصر من ذلك." </div>
-        <div class="lyrics" id="message485">"الاستسلام هو الخيار الوحيد الذي يمنعك من النجاح." </div>
-        <div class="lyrics" id="message486">"اسمح لنفسك بالتعبير عن المشاعر." </div>
-        <div class="lyrics" id="message487">"دائمًا ضع في اعتبارك، أنك أكثر قدرة مما تعتقد." </div>
-        <div class="lyrics" id="message488">"النجاح يحتاج إلى وقت، فلا تتعجل." </div>
-        <div class="lyrics" id="message489">"اجعل من الهزيمة مصدر إلهام لك." </div>
-        <div class="lyrics" id="message490">"كن لطيفًا مع نفسك، فالحياة رحلة." </div>
-        <div class="lyrics" id="message491">"تتطلب الحياة أحيانًا تحمل المخاطر." </div>
-        <div class="lyrics" id="message492">"كل يوم هو فرصة جديدة لدراسة مستقبلك." </div>
-        <div class="lyrics" id="message493">"استفد من التجارب السابقة لتطوير نفسك." </div>
-        <div class="lyrics" id="message494">"كن جزءًا من الحل، وليس جزءًا من المشكلة." </div>
-        <div class="lyrics" id="message495">"أضف بعض المرح إلى حياتك اليومية." </div>
-        <div class="lyrics" id="message496">"استمتع باللحظة الحالية، فهي هدية." </div>
-        <div class="lyrics" id="message497">"ترتفع روحك عندما تقرأ كتابًا ملهمًا." </div>
-        <div class="lyrics" id="message498">"كن مرنًا في خططك، فالحياة غير متوقعة." </div>
-        <div class="lyrics" id="message499">"اجعل من التعلم شغفًا دائمًا." </div>
-        <div class="lyrics" id="message500">"غادر الاجتماع وأنت شغوف بما حققته." </div>
-        
-        <!-- Audio element -->
-        <audio id="audioPlayer" src="A.mp3"></audio>
-
-        <!-- Play Button -->
-        <button class="play-button" id="playButton">
-            <span>►</span> تشغيل
-        </button>
+    <div class="product-info-modal" id="productInfoModal">
+        <h3 id="productInfoTitle"></h3>
+        <p id="productInfoDescription"></p>
+        <button class="close-button" onclick="closeProductInfo()">غلق</button>
     </div>
 
     <script>
-        const lyrics = document.querySelectorAll('.lyrics');
-        const audioPlayer = document.getElementById('audioPlayer');
-        const playButton = document.getElementById('playButton');
-        let currentMessage = 0;
-        let interval;
-        let countdownInterval;
+        const cart = [];
 
-        // Shuffle lyrics for random display
-        function shuffleLyrics() {
-            const randomIndex = Math.floor(Math.random() * lyrics.length);
-            return randomIndex;
+        document.addEventListener('DOMContentLoaded', (event) => {
+            showOldProducts();
+        });
+
+        function showProductInfo(productName) {
+            const product = document.querySelector(`.service-icon[data-name="${productName}"]`);
+            const description = product.getAttribute('data-description');
+            document.getElementById('productInfoTitle').textContent = productName;
+            document.getElementById('productInfoDescription').textContent = description;
+            document.getElementById('productInfoModal').style.display = 'block';
         }
 
-        // Update Timer every second
-        function updateTimer() {
-            const timerElement = document.getElementById('timer');
-            let time = timerElement.textContent.split(":");
-            let minutes = parseInt(time[0]);
-            let seconds = parseInt(time[1]);
+        function closeProductInfo() {
+            document.getElementById('productInfoModal').style.display = 'none';
+        }
 
-            if (seconds > 0) {
-                seconds--;
-            } else {
-                if (minutes > 0) {
-                    minutes--;
-                    seconds = 59;
-                }
+        function toggleCart() {
+            const cartList = document.getElementById('cartList');
+            cartList.style.display = cartList.style.display === 'block' ? 'none' : 'block';
+            if (cartList.style.display === 'block') {
+                updateCartList();
             }
-
-            timerElement.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
         }
 
-        // Start the messages and timer
-        function startMessages() {
-            // Show a random message immediately
-            let index = shuffleLyrics();
-            lyrics[index].classList.add('visible');
-            currentMessage++;
+        function updateCartList() {
+            const cartList = document.getElementById('cart-list');
+            const totalPriceElement = document.getElementById('totalPrice');
+            cartList.innerHTML = '';
+            let total = 0;
 
-            // Start showing other messages every 5 seconds
-            interval = setInterval(() => {
-                // Hide the previous message
-                if (currentMessage > 0) {
-                    lyrics[currentMessage - 1].classList.remove('visible');
+            cart.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `${item.name} <span>${item.price} ر.س</span> <button onclick="removeItem(${index});">-</button>`;
+                cartList.appendChild(li);
+                total += item.price;
+            });
+
+            totalPriceElement.textContent = `إجمالي: ${total} ر.س`;
+        }
+
+        function toggleProduct(button, name, price) {
+            const index = cart.findIndex(item => item.name === name);
+            if (index === -1) {
+                cart.push({ name, price });
+                button.classList.remove('add');
+                button.classList.add('remove');
+                button.textContent = '-';
+            } else {
+                cart.splice(index, 1);
+                button.classList.remove('remove');
+                button.classList.add('add');
+                button.textContent = '+';
+            }
+            updateCartList();
+        }
+
+        function removeItem(index) {
+            const itemName = cart[index].name;
+            const buttons = document.querySelectorAll('.toggle-button');
+
+            buttons.forEach((button) => {
+                if (button.textContent === '-' && button.parentElement.getAttribute('data-name') === itemName) {
+                    button.classList.remove('remove');
+                    button.classList.add('add');
+                    button.textContent = '+';
                 }
+            });
 
-                // Show a random next message
-                index = shuffleLyrics();
-                lyrics[index].classList.add('visible');
-                currentMessage++;
-
-                if (currentMessage >= lyrics.length) {
-                    clearInterval(interval);
-                }
-            }, 5000); // Display each message every 5 seconds
+            cart.splice(index, 1);
+            updateCartList();
         }
 
-        // Start countdown timer
-        function startCountdown() {
-            countdownInterval = setInterval(updateTimer, 1000); // Update every second
+        function closeCart() {
+            document.getElementById('cartList').style.display = 'none';
         }
 
-        // Handle click anywhere on the page
-        function handlePlay() {
-            // Hide the play button
-            playButton.style.display = 'none';
+        function goToPaymentPage() {
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            const services = cart.map(item => item.name).join(', ');
+            if (total > 0) {
+                alert(`Proceed to payment with the following services: ${services} for a total of ${total} ر.س`);
+            } else {
+                alert('Your cart is empty!');
+            }
+        }
+
+        function showNewProducts() {
+            const servicesGrid = document.getElementById("servicesGrid");
+            servicesGrid.innerHTML = ''; // Clear existing services
+
+            const newProducts = `
+                <div class="service-icon" data-name="نتفليكس" data-price="35 ر.س" data-description="هذه الخدمة على حسابك الخاص لمده شهر">
+                    <div class="alert-icon" onclick="showProductInfo('نتفليكس');">!</div>
+                    <h3>نتفليكس</h3>
+                    <div class="price-preview">35 ر.س / الشهر</div>
+                    <button class="toggle-button add" onclick="toggleProduct(this, 'نتفليكس', 35);">+</button>
+                </div>
+                <div class="service-icon" data-name="شاهد VIP" data-price="20 ر.س" data-description="هذه الخدمة على حسابك الخاص لمده شهر">
+                    <div class="alert-icon" onclick="showProductInfo('شاهد VIP');">!</div>
+                    <h3>شاهد VIP</h3>
+                    <div class="price-preview">20 ر.س / الشهر</div>
+                    <button class="toggle-button add" onclick="toggleProduct(this, 'شاهد VIP', 20);">+</button>
+                </div>
+                <div class="service-icon" data-name="شاهد الرياضي" data-price="37 ر.س" data-description="منصة بث رياضي عربية.">
+                    <div class="alert-icon" onclick="showProductInfo('شاهد الرياضي');">!</div>
+                    <h3>شاهد الرياضي</h3>
+                    <div class="price-preview">37 ر.س / الشهر</div>
+                    <button class="toggle-button add" onclick="toggleProduct(this, 'شاهد الرياضي', 37);">+</button>
+                </div>
+            `;
+            servicesGrid.innerHTML = newProducts;
+        }
+
+        function showOldProducts() {
+            const servicesGrid = document.getElementById("servicesGrid");
+            servicesGrid.innerHTML = ''; // Clear existing services
             
-            // Start showing messages and playing the audio
-            startMessages();
-            startCountdown();
-            audioPlayer.play();
+            const oldProducts = `
+                <div class="service-icon" data-name="نتفليكس" data-price="15 ر.س" data-description="لمدة شهر 30 يوم , جهاز واحد بروفايل واحد">
+                    <div class="alert-icon" onclick="showProductInfo('نتفليكس');">!</div>
+                    <img src="https://www.stc.com.sa/content/dam/stc/netflix%20logo.png" alt="Netflix Logo" class="icon-img">
+                    <h3>نتفليكس</h3>
+                    <div class="price-preview">15 ر.س / الشهر</div>
+                    <button class="toggle-button add" onclick="toggleProduct(this, 'نتفليكس', 15);">+</button>
+                </div>
+
+                <div class="service-icon" data-name="برايم فيديو" data-price="10 ر.س" data-description="لمدة شهر , جهاز واحد">
+                    <div class="alert-icon" onclick="showProductInfo('برايم فيديو');">!</div>
+                    <img src="https://play-lh.googleusercontent.com/mZ6pRo5-NnrO9GMwFNrK5kShF0UrN5UOARVAw64_5aFG6NgEHSlq-BX5I8TEXtTOk9s" alt="Prime Video Logo" class="icon-img">
+                    <h3>برايم فيديو</h3>
+                    <div class="price-preview">10 ر.س / الشهر</div>
+                    <button class="toggle-button add" onclick="toggleProduct(this, 'برايم فيديو', 10);">+</button>
+                </div>
+
+                <div class="service-icon" data-name="يوتيوب بريميوم" data-price="7 ر.س" data-description="عائلي 7 للشهر التجديد 18 ريال">
+                    <div class="alert-icon" onclick="showProductInfo('يوتيوب بريميوم');">!</div>
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWu3iTNab6Gt0Q5yo3vKxQG4OL4szu-bgXpg&s" alt="YouTube Premium Logo" class="icon-img">
+                    <h3>يوتيوب بريميوم</h3>
+                    <div class="price-preview">7 ر.س / الشهر</div>
+                    <button class="toggle-button add" onclick="toggleProduct(this, 'يوتيوب بريميوم', 7);">+</button>
+                </div>
+
+                <div class="service-icon" data-name="OSN+" data-price="15 ر.س" data-description="جهاز واحد , ثلاثين يوم">
+                    <div class="alert-icon" onclick="showProductInfo('OSN+');">!</div>
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREvDyudPLgtdZ3wrRflHVIJkEdotweRbbMtw&s" alt="OSN+ Logo" class="icon-img">
+                    <h3>OSN+</h3>
+                    <div class="price-preview">15 ر.س / الشهر</div>
+                    <button class="toggle-button add" onclick="toggleProduct(this, 'OSN+', 15);">+</button>
+                </div>
+
+                <div class="service-icon" data-name="شاهد VIP" data-price="10 ر.س" data-description="اشتراك جوال, شامل الدوري السعودي, جهاز واحد">
+                    <div class="alert-icon" onclick="showProductInfo('شاهد VIP');">!</div>
+                    <img src="https://fennec-fox.net/wp-content/uploads/2020/07/New-Shahid_logo.png.webp" alt="Shahid VIP Logo" class="icon-img">
+                    <h3>شاهد VIP</h3>
+                    <div class="price-preview">10 ر.س / الشهر</div>
+                    <button class="toggle-button add" onclick="toggleProduct(this, 'شاهد VIP', 10);">+</button>
+                </div>
+
+                <div class="service-icon" data-name="الشطرنج" data-price="75 ر.س" data-description="على حسابك الخاص لمدة سنة">
+                    <div class="alert-icon" onclick="showProductInfo('الشطرنج');">!</div>
+                    <img src="https://img.tapimg.net/market/images/4d65c5705752c3925a91e082461ca56f.png" alt="Chess Logo" class="icon-img">
+                    <h3>الشطرنج</h3>
+                    <div class="price-preview">75 ر.س / السنة</div>
+                    <button class="toggle-button add" onclick="toggleProduct(this, 'الشطرنج', 75);">+</button>
+                </div>
+
+                <div class="service-icon" data-name="STC TV" data-price="10 ر.س" data-description="مده 30 يوم">
+                    <div class="alert-icon" onclick="showProductInfo('STC TV');">!</div>
+                    <img src="https://yt3.googleusercontent.com/yVh1pSojjEroCAXS1x3ELRiQbwT6bKYpZz1YhmqwdiT6Lej7Eoci1vJKjG_8gvZAoKT81F-Psg=s900-c-k-c0x00ffffff-no-rj" alt="STC TV Logo" class="icon-img">
+                    <h3>STC TV</h3>
+                    <div class="price-preview">10 ر.س / الشهر</div>
+                    <button class="toggle-button add" onclick="toggleProduct(this, 'STC TV', 10);">+</button>
+                </div>
+
+                <div class="service-icon" data-name="جوّي TV" data-price="10 ر.س" data-description="ثلاثين يوم">
+                    <div class="alert-icon" onclick="showProductInfo('جوّي TV');">!</div>
+                    <img src="https://play-lh.googleusercontent.com/fMWKQ2EaiUV0pF9Ymccb9mTySPvdhL_Dvu0-rRAi08y11HqXsFWHEYemv8EKvr5hfx8" alt="Jawwy TV Logo" class="icon-img">
+                    <h3>جوّي TV</h3>
+                    <div class="price-preview">10 ر.س / الشهر</div>
+                    <button class="toggle-button add" onclick="toggleProduct(this, 'جوّي TV', 10);">+</button>
+                </div>
+
+                <div class="service-icon" data-name="سناب شات" data-price="10 ر.س" data-description="ثلاث شهور. اعطيك إياه قيفت على حسابك">
+                    <div class="alert-icon" onclick="showProductInfo('سناب شات');">!</div>
+                    <img src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/c8/da/85/c8da8509-8b39-c515-ce28-3e7a1674d3d5/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/1200x630wa.png" alt="Snapchat Logo" class="icon-img">
+                    <h3>سناب شات</h3>
+                    <div class="price-preview">10 ر.س / 3 أشهر</div>
+                    <button class="toggle-button add" onclick="toggleProduct(this, 'سناب شات', 10);">+</button>
+                </div>
+
+                <div class="service-icon" data-name="كملنا" data-price="160 ر.س" data-description="على حسابك لمدة سنة">
+                    <div class="alert-icon" onclick="showProductInfo('كملنا');">!</div>
+                    <img src="https://play-lh.googleusercontent.com/y8RsUCA18nIMkTtwt9IYNU5kiEI7u4Tx7VSSkbehDP9Yix8irzZBbz0qxEfkykvUKT_1" alt="Kammlna Logo" class="icon-img">
+                    <h3>كملنا</h3>
+                    <div class="price-preview">160 ر.س / السنة</div>
+                    <button class="toggle-button add" onclick="toggleProduct(this, 'كملنا', 160);">+</button>
+                </div>
+
+                <div class="service-icon" data-name="IPTV" data-price="40 ر.س" data-description="خدمة IPTV توفر قنوات تلفزيونية متنوعة.">
+                    <div class="alert-icon" onclick="showProductInfo('IPTV');">!</div>
+                    <img src="https://cdn.salla.sa/vqAyo/bcf687a8-fffa-4d0f-8676-b6b20910c06c-1000x1000-ItFYbnNT2Nf4A1ayXXOQGUHiViWHWoXrq2ScDbvq.png" alt="IPTV Logo" class="icon-img">
+                    <h3>IPTV</h3>
+                    <div class="price-preview">40 ر.س / السنة</div>
+                    <button class="toggle-button add" onclick="toggleProduct(this, 'IPTV', 40);">+</button>
+                </div>
+
+                <div class="service-icon" data-name="أنغامي" data-price="10 ر.س" data-description="منصة الموسيقى الشهيرة.">
+                    <div class="alert-icon" onclick="showProductInfo('أنغامي');">!</div>
+                    <img src="https://www.stc.com.sa/content/dam/stc/Anghami.png" alt="Anghami Logo" class="icon-img">
+                    <h3>أنغامي</h3>
+                    <div class="price-preview">10 ر.س / الشهر</div>
+                    <button class="toggle-button add" onclick="toggleProduct(this, 'أنغامي', 10);">+</button>
+                </div>
+
+                <div class="service-icon" data-name="Spotify" data-price="7 ر.س" data-description="خدمة بث الموسيقى المشهورة.">
+                    <div class="alert-icon" onclick="showProductInfo('Spotify');">!</div>
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwDiicpDsawpNveT7Ota2-EC_vZbP8vneTbg&s" alt="Spotify Logo" class="icon-img">
+                    <h3>Spotify</h3>
+                    <div class="price-preview">7 ر.س / الشهر</div>
+                    <button class="toggle-button add" onclick="toggleProduct(this, 'Spotify', 7);">+</button>
+                </div>
+
+                <div class="service-icon" data-name="Canva" data-price="7 ر.س" data-description="أداة تصميم رسومات شهيرة.">
+                    <div class="alert-icon" onclick="showProductInfo('Canva');">!</div>
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTS4_84DOFOo0V4Q3ipj_3ti80genH3Ix9gzw&s" alt="Canva Logo" class="icon-img">
+                    <h3>Canva</h3>
+                    <div class="price-preview">7 ر.س / الشهر</div>
+                    <button class="toggle-button add" onclick="toggleProduct(this, 'Canva', 7);">+</button>
+                </div>
+            `;
+            servicesGrid.innerHTML = oldProducts;
         }
-
-// Start the messages and timer
-function startMessages() {
-    // Show a random message immediately
-    let index = shuffleLyrics();
-    lyrics[index].classList.add('visible'); // عرض الرسالة الأولية
-
-    // Start showing other messages every 5 seconds
-    interval = setInterval(() => {
-        // Hide the current message
-        const currentLyrics = index;
-        lyrics[currentLyrics].classList.remove('visible');
-
-        // Show a new random message
-        index = shuffleLyrics();
-        lyrics[index].classList.add('visible');
-    }, 5000); // Display each message every 5 seconds
-}
-
-        // Event listener for clicking anywhere on the body
-        document.body.addEventListener('click', handlePlay);
     </script>
 </body>
 </html>
