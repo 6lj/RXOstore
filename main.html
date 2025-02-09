@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RXO Store</title>
+    <title>RXO Store - الرئيسية</title>
     <style>
         * {
             margin: 0;
@@ -313,7 +313,7 @@
             const total = cart.reduce((sum, item) => sum + item.price, 0);
             const services = cart.map(item => item.name).join(', ');
             if (total > 0) {
-                alert(`Proceed to payment with the following services: ${services} for a total of ${total} ر.س`);
+                window.location.href = `payment.html?service=${encodeURIComponent(services)}&price=${total}`;
             } else {
                 alert('Your cart is empty!');
             }
