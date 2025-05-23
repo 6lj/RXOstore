@@ -24,19 +24,19 @@
     font-weight: bold;
     text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
   }
-  .logo-container {
-    width: 500px;
-    height: 250px;
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    margin-bottom: 20px;
-  }
+.logo-container {
+  width: 500px;
+  height: 250px;
+  background: transparent; 
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: none; 
+  backdrop-filter: none; 
+  border: none; 
+  margin-bottom: 20px;
+}
   .infinity-logo {
     width: 90%;
     height: auto;
@@ -82,30 +82,28 @@
 <div class="game-title">By ENDUP</div>
 <div class="logo-container">
   <svg class="infinity-logo" viewBox="0 0 500 250">
+
     <path id="pathBase"
       d="M80 125 C 80 75, 170 75, 250 125
-         C 330 175, 420 175, 420 125
-         C 420 75, 330 75, 250 125
-         C 170 175, 80 175, 80 125"
+        C 330 175, 420 175, 420 125
+        C 420 75, 330 75, 250 125
+        C 170 175, 80 175, 80 125"
       class="infinity-path-base" />
     <path id="pathWorm"
       d="M80 125 C 80 75, 170 75, 250 125
-         C 330 175, 420 175, 420 125
-         C 420 75, 330 75, 250 125
-         C 170 175, 80 175, 80 125"
+        C 330 175, 420 175, 420 125
+        C 420 75, 330 75, 250 125
+        C 170 175, 80 175, 80 125"
       class="infinity-path-worm" />
   </svg>
 </div>
 
 <div class="maintenance-message">الموقع تحت الصيانة</div>
 
-<!-- زر تشغيل الموسيقى - مخفي -->
 <button id="hiddenPlayBtn" style="display:none;">تشغيل الموسيقى</button>
 
-<!-- زر التحكم في الصوت الظاهر للمستخدم -->
 <button id="sound-toggle">تشغيل الموسيقى</button>
 
-<!-- مشغل الموسيقى بدون autoplay -->
 <audio id="background-music" loop>
   <source src="A.mp3" type="audio/mpeg" />
   متصفحك لا يدعم مشغل الصوت.
